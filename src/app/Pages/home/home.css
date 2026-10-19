@@ -1,0 +1,98 @@
+:host {
+  --navy: #14213d;
+  --gold: #b08d3c;
+  --cream: #f2e6d3;
+  --red: #b03a2e;
+  display: block;
+  background: var(--cream);
+  min-height: calc(100vh - 86px);
+  border-top: 6px solid var(--gold);
+}
+
+.hero {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 40px;
+}
+
+/* Sello "Work and Travel" */
+.sello {
+  display: inline-block;
+  border: 3px solid var(--red);
+  color: var(--red);
+  padding: 4px 14px;
+  font-family: 'Bebas Neue', 'Oswald', sans-serif;
+  font-size: 1.4rem;
+  transform: rotate(-3deg);
+  margin-bottom: 24px;
+}
+
+/* Título */
+.titulo {
+  font-family: 'Bebas Neue', 'Oswald', sans-serif;
+  font-size: clamp(3rem, 7vw, 6rem);
+  line-height: 0.95;
+  color: var(--navy);
+  margin: 0 0 24px;
+  font-weight: 400;
+}
+
+/* Descripción */
+.descripcion {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--navy);
+  max-width: 520px;
+  margin: 0 0 32px;
+}
+
+/* Botones */
+.botones {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 14px 28px;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-weight: 600;
+  text-decoration: none;
+  border: 2px solid var(--navy);
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-gold {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+}
+.btn-gold:hover {
+  background: transparent;
+  color: var(--gold);
+}
+
+.btn-outline {
+  background: transparent;
+  color: var(--navy);
+}
+.btn-outline:hover {
+  background: var(--navy);
+  color: var(--cream);
+}
+
+/* Imagen */
+.hero__imagen {
+  display: flex;
+  justify-content: center;
+}
+.hero__imagen img {
+  width: 100%;
+  max-width: 560px;
+  height: auto;
+}

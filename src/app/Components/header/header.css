@@ -1,0 +1,59 @@
+:host {
+  --navy: #14213d;
+  --gold: #b08d3c;
+  --cream: #f2e6d3;
+}
+
+.header {
+  background: var(--navy);
+  height: 86px;
+  display: flex;
+  align-items: center;
+}
+
+.mae {
+  width: 100%;
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.mae p {
+  margin: 0;
+  cursor: pointer;
+  color: var(--cream);
+  transition: color 0.2s, background 0.2s;
+}
+
+/* "Inicio" a la izquierda, con estilo de logo */
+.logo {
+  margin-right: auto ;
+  font-family: 'Bebas Neue', 'Oswald', sans-serif;
+  font-size: 1.4rem;
+  color: var(--gold) ;
+}
+
+.link:hover {
+  color: var(--gold);
+}
+
+/* Botones */
+.btn {
+  padding: 10px 20px;
+  border: 2px solid var(--gold);
+}
+
+.btn-gold {
+  background: var(--gold);
+  color: var(--navy) ;
+}
+.btn-gold:hover {
+  background: transparent;
+  color: var(--gold) ;
+}
