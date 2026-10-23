@@ -1,0 +1,70 @@
+/* Contenedor principal */
+.contenedor {
+    background-color: #f2e6d1;
+    min-height: 100vh;
+    padding: 40px 3.2%;
+    box-sizing: border-box;
+}
+
+/* Título principal */
+.contenedor h1 {
+    color: #142344;
+    font-size: 64px;
+    margin: 0 0 20px;
+    font-weight: bold;
+    font-family: sans-serif;
+}
+
+/* Contenedor del texto y las tarjetas */
+.about {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+}
+
+/* Descripción */
+.data {
+    max-width: 800px;
+}
+
+.data p {
+    color: #142344;
+    font-size: 22px;
+    line-height: 1.65;
+    margin: 0;
+    font-family: monospace;
+}
+
+/* Contenedor de las tres tarjetas */
+.camps {
+    display: flex;
+    gap: 24px;
+    width: 100%;
+}
+
+/* Cada tarjeta */
+.info {
+    flex: 1;
+    border: 2px solid #142344;
+    background-color: #faf5e9;
+    padding: 24px;
+    box-sizing: border-box;
+}
+
+/* Títulos de las tarjetas */
+.info h3 {
+    color: #142344;
+    font-size: 23px;
+    margin: 0 0 18px;
+    font-weight: bold;
+    font-family: sans-serif;
+}
+
+/* Texto de las tarjetas */
+.info p {
+    color: #142344;
+    font-size: 18px;
+    line-height: 1.7;
+    margin: 0;
+    font-family: monospace;
+}

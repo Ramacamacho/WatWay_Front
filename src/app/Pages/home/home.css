@@ -51,40 +51,7 @@
   margin: 0 0 32px;
 }
 
-/* Botones */
-.botones {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-}
 
-.btn {
-  padding: 14px 28px;
-  font-family: 'IBM Plex Mono', 'Courier New', monospace;
-  font-weight: 600;
-  text-decoration: none;
-  border: 2px solid var(--navy);
-  transition: background 0.2s, color 0.2s;
-}
-
-.btn-gold {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: var(--navy);
-}
-.btn-gold:hover {
-  background: transparent;
-  color: var(--gold);
-}
-
-.btn-outline {
-  background: transparent;
-  color: var(--navy);
-}
-.btn-outline:hover {
-  background: var(--navy);
-  color: var(--cream);
-}
 
 /* Imagen */
 .hero__imagen {

@@ -25,11 +25,11 @@ ngOnInit(): void {
   })
 }
 
-onSubmit():void{
-  this.service.lala().subscribe({
-    next:()=>
-      this.router.navigate(['/']),
-    error:()=>alert("usuario o contraseña incorrectos")
-  });
+ onSubmit():void{
+//   this.service.lala().subscribe({
+//     next:()=>
+//       this.router.navigate(['/']),
+//     error:()=>alert("usuario o contraseña incorrectos")
+//   });
 }
 }

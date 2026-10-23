@@ -1,0 +1,205 @@
+
+
+.contenedor {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 30px;
+    background: linear-gradient(135deg, #e8eff7, #cbd8e8);
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Estructura del pasaporte */
+
+.pasaporte {
+    width: 350px;
+    background-color: white;
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
+    border: 2px solid #c5a45d;
+}
+
+/* Portada */
+
+.portada {
+    background: linear-gradient(145deg, #102e59, #071a35);
+    color: #d8bd7a;
+    text-align: center;
+    padding: 25px 20px;
+    border-bottom: 3px solid #c5a45d;
+    position: relative;
+}
+
+/* Nombre del país */
+
+.pais {
+    font-size: 11px;
+    letter-spacing: 3px;
+    margin: 0;
+    font-weight: bold;
+}
+
+/* Globo terráqueo */
+
+
+
+/* Nombre de la aplicación */
+
+.portada h1 {
+    font-size: 28px;
+    letter-spacing: 6px;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+/* Título del pasaporte */
+
+.portada h2 {
+    font-size: 15px;
+    letter-spacing: 5px;
+    margin: 15px 0;
+    font-weight: normal;
+}
+
+/* Línea decorativa */
+
+.linea {
+    width: 80%;
+    height: 1px;
+    background-color: #c5a45d;
+    margin: 15px auto;
+}
+
+/* Subtítulo */
+
+.subtitulo {
+    font-size: 12px;
+    letter-spacing: 4px;
+    margin: 0;
+}
+
+/* Formulario */
+
+.pasaporte form {
+    padding: 25px;
+    background-color: #fffdf8;
+}
+
+/* Título del formulario */
+
+.pasaporte form h3 {
+    color: #102e59;
+    text-align: center;
+    font-size: 24px;
+    margin: 0 0 8px;
+}
+
+/* Descripción */
+
+.descripcion {
+    text-align: center;
+    color: #697586;
+    font-size: 13px;
+    margin-bottom: 25px;
+}
+
+/* Contenedor de los campos */
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* Cada campo */
+
+.campos {
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+}
+
+/* Etiquetas */
+
+.campos label {
+    color: #102e59;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* Inputs */
+
+.campos input {
+    padding: 12px;
+    border: 1px solid #cbd3df;
+    border-radius: 6px;
+    outline: none;
+    font-size: 14px;
+    background-color: white;
+    transition: border-color 0.3s, box-shadow 0.3s;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Cuando seleccionás un input */
+
+.campos input:focus {
+    border-color: #c5a45d;
+    box-shadow: 0 0 5px rgba(197, 164, 93, 0.4);
+}
+
+/* Mensajes de error */
+
+.error {
+    color: #c0392b;
+    font-size: 12px;
+    margin: 0;
+}
+
+/* Botón */
+
+.pasaporte button {
+    width: 100%;
+    margin-top: 25px;
+    padding: 13px;
+    background-color: #102e59;
+    color: #d8bd7a;
+    border: 1px solid #c5a45d;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+/* Efecto al pasar el mouse */
+
+.pasaporte button:hover {
+    background-color: #1c457c;
+    transform: translateY(-2px);
+}
+
+/* Registro */
+
+.registro {
+    margin: 20px 0 0;
+    text-align: center;
+    font-size: 12px;
+    color: #697586;
+}
+
+.registro a {
+    color: #102e59;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.registro a:hover {
+    text-decoration: underline;
+}
+
+
+
