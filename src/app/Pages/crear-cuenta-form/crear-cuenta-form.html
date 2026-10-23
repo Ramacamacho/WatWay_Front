@@ -1,1 +1,49 @@
-<p>crear-cuenta-form works!</p>
+<form [formGroup]="form" (ngSubmit)="enviar()">
+  <h2>Crear cuenta</h2>
+
+  <label for="nombre">Nombre</label>
+  <input id="nombre" formControlName="nombre" type="text" />
+  @if (invalido('nombre')) { <small>El nombre es obligatorio</small> }
+
+  <label for="apellido">Apellido</label>
+  <input id="apellido" formControlName="apellido" type="text" />
+  @if (invalido('apellido')) { <small>El apellido es obligatorio</small> }
+
+  <label for="email">Email</label>
+  <input id="email" formControlName="email" type="email" />
+  @if (invalido('email')) { <small>Ingresá un email válido</small> }
+
+  <label for="password">Contraseña</label>
+  <input id="password" formControlName="password" type="password" />
+  @if (invalido('password')) { <small>Mínimo 6 caracteres</small> }
+
+  <label for="posicionLaboral">Posición laboral</label>
+  <input id="posicionLaboral" formControlName="posicionLaboral" type="text"
+         placeholder="Ej: Mozo, Housekeeping, Cajero" />
+  @if (invalido('posicionLaboral')) { <small>Indicá tu posición laboral</small> }
+
+  <label for="ciudadDestino">Ciudad destino</label>
+  <input id="ciudadDestino" formControlName="ciudadDestino" type="text"
+         placeholder="Ej: Wildwood, Ocean City" />
+  @if (invalido('ciudadDestino')) { <small>Indicá la ciudad de destino</small> }
+
+  <label for="sexo">Sexo</label>
+  <select id="sexo" formControlName="sexo">
+    <option value="">Seleccioná</option>
+    <option value="MASCULINO">Masculino</option>
+    <option value="FEMENINO">Femenino</option>
+  </select>
+  @if (invalido('sexo')) { <small>Seleccioná una opción</small> }
+
+  <label for="descripcion">Descripción</label>
+  <textarea id="descripcion" formControlName="descripcion" rows="4"
+            placeholder="Contanos un poco sobre vos"></textarea>
+  @if (invalido('descripcion')) { <small>Máximo 500 caracteres</small> }
+
+ 
+@if (error()) { <p class="error">{{ error() }}</p> }
+
+<button type="submit" [disabled]="cargando()">
+  {{ cargando() ? 'Creando...' : 'Registrarme' }}
+</button>
+</form>

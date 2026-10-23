@@ -4,7 +4,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { LogService } from '../../Servicios/log-service';
 
 @Component({
-  imports: [RouterLink,ReactiveFormsModule],
+  imports: [ReactiveFormsModule],
   selector: 'app-login-form',
   styleUrl: './login-form.css',
   templateUrl: './login-form.html',
@@ -25,11 +25,5 @@ ngOnInit(): void {
   })
 }
 
- onSubmit():void{
-//   this.service.lala().subscribe({
-//     next:()=>
-//       this.router.navigate(['/']),
-//     error:()=>alert("usuario o contraseña incorrectos")
-//   });
-}
+
 }

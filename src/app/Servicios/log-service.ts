@@ -1,6 +1,8 @@
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable, Service } from '@angular/core';
 import { Observable } from 'rxjs';
+
 
 @Injectable({
     providedIn : 'root'
@@ -8,12 +10,5 @@ import { Observable } from 'rxjs';
 export class LogService {
 
 private url = '';
- 
 
-//  constructor(private http : HttpClient) {}
-
-//     Iniciarsesion(email:String ,password : String ): Observable<UserLog>{
-// return this.http.post<UserLog>(this.url )
-//     }
- 
 }
