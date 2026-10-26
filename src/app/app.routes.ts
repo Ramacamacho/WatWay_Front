@@ -4,6 +4,7 @@ import { Contacto } from './Pages/contacto/contacto';
 import { AboutUs } from './Pages/about-us/about-us';
 import { LoginForm } from './Pages/login-form/login-form';
 import { CrearCuentaForm } from './Pages/crear-cuenta-form/crear-cuenta-form';
+import { ChecklistForm } from './SecondPages/checklist-form/checklist-form';
 
 export const routes: Routes = [
     {path :'',component:Home},
@@ -11,4 +12,5 @@ export const routes: Routes = [
      {path :'sobrenosotros',component:AboutUs},
      {path :'login',component:LoginForm},
      {path :'crearcuenta',component:CrearCuentaForm},
+     {path : 'checklist/:id',component:ChecklistForm}
 ];

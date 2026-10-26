@@ -1,0 +1,54 @@
+@if (cargando()) {
+  <p class="estado">Cargando...</p>
+} @else if (error()) {
+  <p class="estado error">{{ error() }}</p>
+}
+
+@if (resumen(); as r) {
+  <section class="checklist">
+    <h2 class="titulo">Mi checklist</h2>
+
+    <div class="progreso">
+      <div class="progreso-info">
+        <span>Progreso</span>
+        <strong>{{ r.progreso | number:'1.0-0' }}%</strong>
+      </div>
+      <div class="barra">
+        <div class="barra-relleno" [style.width.%]="r.progreso"></div>
+      </div>
+    </div>
+
+    <h3 class="subtitulo">Faltantes ({{ r.faltantes.length }})</h3>
+    <ul class="lista">
+      @for (item of r.faltantes; track item.id) {
+        <li class="item">
+          <label class="item-label">
+            <input type="checkbox" [checked]="item.completado" (change)="toggle(item)" />
+            <span class="caja"></span>
+            <span class="item-texto">{{ labels[item.documento] }}</span>
+          </label>
+          @if (item.fechaLimite) {
+            <span class="fecha">Límite: {{ item.fechaLimite | date:'dd/MM/yyyy' }}</span>
+          }
+        </li>
+      } @empty {
+        <li class="vacio">No te falta ningún documento 🎉</li>
+      }
+    </ul>
+
+    <h3 class="subtitulo">Completados ({{ r.completados.length }})</h3>
+    <ul class="lista">
+      @for (item of r.completados; track item.id) {
+        <li class="item completado">
+          <label class="item-label">
+            <input type="checkbox" [checked]="item.completado" (change)="toggle(item)" />
+            <span class="caja"></span>
+            <span class="item-texto">{{ labels[item.documento] }}</span>
+          </label>
+        </li>
+      } @empty {
+        <li class="vacio">Todavía no completaste ninguno</li>
+      }
+    </ul>
+  </section>
+}

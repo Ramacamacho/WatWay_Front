@@ -22,7 +22,7 @@
                 <label for="email"> Email :</label>
             <input type="email" id="email" formControlName="email">
             @if(formulario.get('email')?.touched && formulario.get('email')?.invalid){
-                <p>Error : ingresa un email valido</p>
+                <p>ingresa un email valido</p>
             }
             </div>
 
@@ -30,7 +30,7 @@
                 <label for="password"> Contraseña :</label>
             <input type="password" id="password" formControlName="password">
             @if(formulario.get('password')?.touched && formulario.get('password')?.invalid){
-                <p>La Contraseña es incorrecta</p>
+                <p>Ingresa una Contraseña</p>
             }
             </div>
 
