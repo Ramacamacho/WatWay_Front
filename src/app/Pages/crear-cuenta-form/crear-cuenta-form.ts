@@ -38,7 +38,7 @@ export class CrearCuentaForm {
     this.cargando.set(true);
     this.error.set('');
 
-    this.auth.register(this.form.getRawValue() as RegisterRequest).subscribe({
+    this.auth.registrar(this.form.getRawValue() as RegisterRequest).subscribe({
       next: () => this.router.navigate(['/login']),
       error: (err: HttpErrorResponse) => {
       this.error.set(err.error?.message || 'No se pudo crear el usuario');

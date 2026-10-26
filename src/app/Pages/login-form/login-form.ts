@@ -1,29 +1,44 @@
-import { Component, inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { LogService } from '../../Servicios/log-service';
+import { Component, inject, signal } from '@angular/core';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Router, RouterLink } from '@angular/router';
+import { Auth } from '../../Servicios/auth';
 
 @Component({
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink],
   selector: 'app-login-form',
   styleUrl: './login-form.css',
   templateUrl: './login-form.html',
 })
-export class LoginForm implements OnInit{
-private fb  =inject(FormBuilder)
-private service =inject(LogService)
-private route =inject(ActivatedRoute)
-private router = inject(Router)
+export class LoginForm {
+  private fb = inject(FormBuilder);
+  private auth = inject(Auth);
+  private router = inject(Router);
 
- formulario! :FormGroup
- logid? :string
+  error = signal('');
+  cargando = signal(false);
 
-ngOnInit(): void {
-  this.formulario = this.fb.group({
-    emial:['',[Validators.required,Validators.maxLength(30)]],
-        password:['',[Validators.required,Validators.maxLength(15)]],
-  })
-}
+  formulario = this.fb.nonNullable.group({
+    email: ['', [Validators.required, Validators.email, Validators.maxLength(100)]],
+    password: ['', [Validators.required]],
+  });
 
+  onSubmit() {
+    if (this.formulario.invalid) {
+      this.formulario.markAllAsTouched();
+      return;
+    }
 
+    this.cargando.set(true);
+    this.error.set('');
+
+    const { email, password } = this.formulario.getRawValue();
+
+    this.auth.login(email, password).subscribe({
+      next: () => this.router.navigate(['/']),
+      error: () => {
+        this.error.set('Email o contraseña incorrectos');
+        this.cargando.set(false);
+      },
+    });
+  }
 }
