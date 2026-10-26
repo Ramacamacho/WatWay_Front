@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
-import { finalize, tap } from 'rxjs';
+import { inject, Injectable, signal } from '@angular/core';
+import { tap } from 'rxjs';
 import { AuthResponse } from '../Models/auth-response';
 import { RegisterRequest } from '../Models/register-request';
 
@@ -8,6 +8,9 @@ import { RegisterRequest } from '../Models/register-request';
 export class Auth {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8080/auth';
+
+  // 1. Creamos la señal reactiva que detecta si hay token al arrancar
+  isLoggedIn = signal<boolean>(!!localStorage.getItem('accessToken'));
 
   registrar(datos: RegisterRequest) {
     return this.http
@@ -22,13 +25,15 @@ export class Auth {
   }
 
   logout() {
-    return this.http
-      .post(
-        `${this.apiUrl}/logout`,
-        { refreshToken: this.getRefreshToken() },
-        { responseType: 'text' }
-      )
-      .pipe(finalize(() => this.limpiarSesion()));
+    // 2. Limpiamos la sesión de inmediato para que el Header cambie al primer clic
+    const refreshToken = this.getRefreshToken();
+    this.limpiarSesion();
+
+    return this.http.post(
+      `${this.apiUrl}/logout`,
+      { refreshToken },
+      { responseType: 'text' }
+    );
   }
 
   getAccessToken(): string | null {
@@ -46,10 +51,12 @@ export class Auth {
   limpiarSesion() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    this.isLoggedIn.set(false); // 3. Apaga la señal al instante (Cerrar sesión)
   }
 
   private guardarTokens(res: AuthResponse) {
     localStorage.setItem('accessToken', res.accessToken);
     localStorage.setItem('refreshToken', res.refreshToken);
+    this.isLoggedIn.set(true); // 4. Enciende la señal al instante (Iniciar sesión)
   }
 }

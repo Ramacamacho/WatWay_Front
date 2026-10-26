@@ -1,8 +1,19 @@
 <header class="header">
+ <header class="header">
   <nav class="mae">
-    <a  routerLink="/"> Inicio</a>
+    <a routerLink="/">Inicio</a>
     <p class="link" routerLink="/sobrenosotros">Sobre nosotros</p>
-    <p class="btn btn-gold" routerLink="/login">Iniciar sesion</p>
-    <p class="btn btn-gold" routerLink="/crearcuenta">Crear cuenta</p>
+
+    <!-- Si el usuario YA inició sesión -->
+    @if (auth.isLoggedIn()) {
+      <a class="link" routerLink="/match">Match</a>
+      <p class="btn btn-gold" (click)="cerrarSesion()">Cerrar sesión</p>
+    } 
+    <!-- Si el usuario NO ha iniciado sesión -->
+    @else {
+      <p class="btn btn-gold" routerLink="/login">Iniciar sesion</p>
+      <p class="btn btn-gold" routerLink="/crearcuenta">Crear cuenta</p>
+    }
   </nav>
+</header>
 </header>
