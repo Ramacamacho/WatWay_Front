@@ -1,18 +1,131 @@
-
-
+/* Contenedor principal con degradado de cielo */
 .contenedor {
     min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 30px;
-    background: linear-gradient(135deg, #e8eff7, #cbd8e8);
+    background: linear-gradient(135deg, #7ab0e6, #b3d8f7);
     box-sizing: border-box;
     font-family: Arial, sans-serif;
+    position: relative;
+    overflow: hidden;
 }
 
-/* Estructura del pasaporte */
+/* --- FONDO ANIMADO (NUBES, ÓRBITA Y AVIÓN) --- */
+.background-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
 
+/* Estilo y animación de las nubes blancas */
+.cloud {
+    position: absolute;
+    background: #ffffff;
+    border-radius: 100px;
+    opacity: 0.85;
+    filter: blur(1px);
+}
+
+.cloud::before, .cloud::after {
+    content: '';
+    position: absolute;
+    background: #ffffff;
+    border-radius: 50%;
+}
+
+/* Nube 1 */
+.cloud-1 {
+    width: 120px; height: 40px;
+    top: 15%; left: -150px;
+    animation: floatCloud 35s linear infinite;
+}
+.cloud-1::before { width: 50px; height: 50px; top: -25px; left: 20px; }
+.cloud-1::after { width: 40px; height: 40px; top: -15px; left: 65px; }
+
+/* Nube 2 */
+.cloud-2 {
+    width: 160px; height: 50px;
+    top: 70%; left: -200px;
+    animation: floatCloud 45s linear infinite;
+    animation-delay: -10s;
+    opacity: 0.7;
+}
+.cloud-2::before { width: 60px; height: 60px; top: -30px; left: 25px; }
+.cloud-2::after { width: 50px; height: 50px; top: -20px; left: 85px; }
+
+/* Nube 3 */
+.cloud-3 {
+    width: 100px; height: 35px;
+    top: 30%; left: -120px;
+    animation: floatCloud 28s linear infinite;
+    animation-delay: -5s;
+}
+.cloud-3::before { width: 40px; height: 40px; top: -20px; left: 15px; }
+.cloud-3::after { width: 35px; height: 35px; top: -15px; left: 50px; }
+
+/* Nube 4 */
+.cloud-4 {
+    width: 140px; height: 45px;
+    top: 85%; left: -180px;
+    animation: floatCloud 40s linear infinite;
+    animation-delay: -20s;
+    opacity: 0.75;
+}
+.cloud-4::before { width: 55px; height: 55px; top: -25px; left: 20px; }
+.cloud-4::after { width: 45px; height: 45px; top: -18px; left: 75px; }
+
+@keyframes floatCloud {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(calc(100vw + 300px)); }
+}
+
+/* --- LÍNEA DE ÓRBITA CIRCULAR PUNTEADA --- */
+.orbit-path {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 480px;
+    height: 480px;
+    margin-top: -240px;
+    margin-left: -240px;
+    border: 2px dashed rgba(16, 46, 89, 0.2);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* --- AVIÓN GIRANDO EN ÓRBITA CIRCULAR --- */
+.flying-plane {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 45px;
+    height: 45px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23102e59'%3E%3Cpath d='M21 16v-2l-8-5V3.5c0-.83-.67-1.5-1.5-1.5S10 2.67 10 3.5V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.85;
+    z-index: 1;
+    transform-origin: center center;
+    animation: circleOrbit 18s linear infinite;
+}
+
+@keyframes circleOrbit {
+    0% {
+        transform: translate(-50%, -50%) rotate(0deg) translateX(240px) rotate(90deg);
+    }
+    100% {
+        transform: translate(-50%, -50%) rotate(360deg) translateX(240px) rotate(450deg);
+    }
+}
+
+/* --- ESTRUCTURA DEL PASAPORTE --- */
 .pasaporte {
     width: 350px;
     background-color: white;
@@ -20,10 +133,11 @@
     overflow: hidden;
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25);
     border: 2px solid #c5a45d;
+    position: relative;
+    z-index: 2; /* Por encima de la órbita y las nubes */
 }
 
 /* Portada */
-
 .portada {
     background: linear-gradient(145deg, #102e59, #071a35);
     color: #d8bd7a;
@@ -33,20 +147,12 @@
     position: relative;
 }
 
-/* Nombre del país */
-
 .pais {
     font-size: 11px;
     letter-spacing: 3px;
     margin: 0;
     font-weight: bold;
 }
-
-/* Globo terráqueo */
-
-
-
-/* Nombre de la aplicación */
 
 .portada h1 {
     font-size: 28px;
@@ -55,16 +161,12 @@
     font-weight: bold;
 }
 
-/* Título del pasaporte */
-
 .portada h2 {
     font-size: 15px;
     letter-spacing: 5px;
     margin: 15px 0;
     font-weight: normal;
 }
-
-/* Línea decorativa */
 
 .linea {
     width: 80%;
@@ -73,8 +175,6 @@
     margin: 15px auto;
 }
 
-/* Subtítulo */
-
 .subtitulo {
     font-size: 12px;
     letter-spacing: 4px;
@@ -82,13 +182,10 @@
 }
 
 /* Formulario */
-
 .pasaporte form {
     padding: 25px;
     background-color: #fffdf8;
 }
-
-/* Título del formulario */
 
 .pasaporte form h3 {
     color: #102e59;
@@ -97,24 +194,11 @@
     margin: 0 0 8px;
 }
 
-/* Descripción */
-
-.descripcion {
-    text-align: center;
-    color: #697586;
-    font-size: 13px;
-    margin-bottom: 25px;
-}
-
-/* Contenedor de los campos */
-
 .menu {
     display: flex;
     flex-direction: column;
     gap: 18px;
 }
-
-/* Cada campo */
 
 .campos {
     display: flex;
@@ -122,15 +206,11 @@
     gap: 7px;
 }
 
-/* Etiquetas */
-
 .campos label {
     color: #102e59;
     font-size: 14px;
     font-weight: bold;
 }
-
-/* Inputs */
 
 .campos input {
     padding: 12px;
@@ -144,22 +224,16 @@
     width: 100%;
 }
 
-/* Cuando seleccionás un input */
-
 .campos input:focus {
     border-color: #c5a45d;
     box-shadow: 0 0 5px rgba(197, 164, 93, 0.4);
 }
-
-/* Mensajes de error */
 
 .error {
     color: #c0392b;
     font-size: 12px;
     margin: 0;
 }
-
-/* Botón */
 
 .pasaporte button {
     width: 100%;
@@ -175,14 +249,10 @@
     transition: background-color 0.3s, transform 0.2s;
 }
 
-/* Efecto al pasar el mouse */
-
 .pasaporte button:hover {
     background-color: #1c457c;
     transform: translateY(-2px);
 }
-
-/* Registro */
 
 .registro {
     margin: 20px 0 0;
@@ -200,6 +270,3 @@
 .registro a:hover {
     text-decoration: underline;
 }
-
-
-
