@@ -55,14 +55,22 @@
         <p class="ayuda">Esto nos sirve para encontrarte compañeros de viaje.</p>
 
         <label for="posicionLaboral">Posición laboral</label>
-        <input id="posicionLaboral" formControlName="posicionLaboral" type="text"
-               placeholder="Ej: Mozo, Housekeeping, Cajero" />
-        @if (invalido('posicionLaboral')) { <small>Indicá tu posición laboral</small> }
+        <select id="posicionLaboral" formControlName="posicionLaboral">
+          <option value="">Seleccioná tu puesto</option>
+          @for (p of posiciones; track p) {
+            <option [value]="p">{{ p }}</option>
+          }
+        </select>
+        @if (invalido('posicionLaboral')) { <small>Seleccioná tu posición laboral</small> }
 
         <label for="ciudadDestino">Ciudad destino</label>
-        <input id="ciudadDestino" formControlName="ciudadDestino" type="text"
-               placeholder="Ej: Wildwood, Ocean City" />
-        @if (invalido('ciudadDestino')) { <small>Indicá la ciudad de destino</small> }
+        <select id="ciudadDestino" formControlName="ciudadDestino">
+          <option value="">Seleccioná la ciudad</option>
+          @for (c of ciudades; track c) {
+            <option [value]="c">{{ c }}</option>
+          }
+        </select>
+        @if (invalido('ciudadDestino')) { <small>Seleccioná la ciudad de destino</small> }
 
         <label for="descripcion">Descripción (opcional)</label>
         <textarea id="descripcion" formControlName="descripcion" rows="4"

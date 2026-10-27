@@ -4,6 +4,7 @@ import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Auth } from '../../Servicios/auth';
 import { RegisterRequest } from '../../Models/register-request';
+import { CIUDADES, POSICIONES } from '../../Models/opciones';
 
 // Campos que se validan en cada paso
 const CAMPOS_POR_PASO: string[][] = [
@@ -26,6 +27,8 @@ export class CrearCuentaForm {
   private router = inject(Router);
 
   titulos = TITULOS;
+  posiciones = POSICIONES;
+  ciudades = CIUDADES;
   ultimoPaso = CAMPOS_POR_PASO.length - 1;
 
   paso = signal(0);
