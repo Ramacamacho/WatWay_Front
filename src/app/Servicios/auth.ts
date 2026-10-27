@@ -1,6 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
-import { finalize, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { AuthResponse } from '../Models/auth-response';
 import { RegisterRequest } from '../Models/register-request';
 
@@ -12,6 +12,9 @@ export class Auth {
   // Estado de sesión reactivo: se inicializa con lo que haya guardado
   private logueado = signal(!!localStorage.getItem('accessToken'));
   readonly estaLogueado = this.logueado.asReadonly();
+
+  // Alias para el código que venía de la rama match
+  readonly isLoggedIn = this.estaLogueado;
 
   registrar(datos: RegisterRequest) {
     return this.http
@@ -26,13 +29,22 @@ export class Auth {
   }
 
   logout() {
-    return this.http
-      .post(
-        `${this.apiUrl}/logout`,
-        { refreshToken: this.getRefreshToken() },
-        { responseType: 'text' }
-      )
-      .pipe(finalize(() => this.limpiarSesion()));
+    const accessToken = this.getAccessToken();
+    const refreshToken = this.getRefreshToken();
+
+    // Se limpia ya mismo: el header cambia al primer clic
+    this.limpiarSesion();
+
+    // El token se manda a mano porque el interceptor ya no lo encuentra en localStorage
+    const headers = accessToken
+      ? new HttpHeaders({ Authorization: `Bearer ${accessToken}` })
+      : undefined;
+
+    return this.http.post(
+      `${this.apiUrl}/logout`,
+      { refreshToken },
+      { headers, responseType: 'text' }
+    );
   }
 
   getAccessToken(): string | null {

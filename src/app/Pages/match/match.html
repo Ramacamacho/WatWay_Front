@@ -1,0 +1,51 @@
+<section class="match">
+  <div class="tabs">
+    <button [class.activo]="vista() === 'descubrir'" (click)="verDescubrir()">Descubrir</button>
+    <button [class.activo]="vista() === 'matches'" (click)="verMatches()">Mis matches</button>
+  </div>
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  @if (vista() === 'descubrir') {
+
+    @if (hayMatch()) {
+      <p class="aviso-match">¡Es un match! 🎉</p>
+    }
+
+    @if (candidato(); as c) {
+      <article class="tarjeta">
+        <h2>{{ c.nombre }} {{ c.apellido }}</h2>
+        <p><strong>Sexo:</strong> {{ c.sexo }}</p>
+        <p><strong>Puesto:</strong> {{ c.posicionLaboral }}</p>
+        <p><strong>Destino:</strong> {{ c.ciudadDestino }}</p>
+        <p>{{ c.descripcion }}</p>
+
+        <div class="botones">
+          <button class="no" (click)="dislike()" [disabled]="cargando()">✖ No</button>
+          <button class="si" (click)="like()" [disabled]="cargando()">♥ Like</button>
+        </div>
+      </article>
+    } @else if (sinCandidatos()) {
+      <p>No hay más candidatos por ahora. Volvé más tarde.</p>
+    } @else if (cargando()) {
+      <p>Buscando candidatos...</p>
+    }
+
+  } @else {
+
+    @if (matches().length === 0) {
+      <p>Todavía no tenés matches.</p>
+    }
+
+    @for (m of matches(); track m.id) {
+      <article class="tarjeta">
+        <h2>{{ m.nombre }} {{ m.apellido }}</h2>
+        <p>{{ m.posicionLaboral }} · {{ m.ciudadDestino }}</p>
+        <p>{{ m.descripcion }}</p>
+      </article>
+    }
+
+  }
+</section>

@@ -34,7 +34,7 @@ export class LoginForm {
     const { email, password } = this.formulario.getRawValue();
 
     this.auth.login(email, password).subscribe({
-      next: () => this.router.navigate(['/']),
+      next: () => this.router.navigate(['/match']),
       error: () => {
         this.error.set('Email o contraseña incorrectos');
         this.cargando.set(false);
