@@ -5,12 +5,14 @@ import { AboutUs } from './Pages/about-us/about-us';
 import { LoginForm } from './Pages/login-form/login-form';
 import { CrearCuentaForm } from './Pages/crear-cuenta-form/crear-cuenta-form';
 import { ChecklistForm } from './SecondPages/checklist-form/checklist-form';
+import { authGuard } from './Servicios/auth-guard';
 
 export const routes: Routes = [
-    {path :'',component:Home},
-    {path :'contact',component:Contacto},
-     {path :'sobrenosotros',component:AboutUs},
-     {path :'login',component:LoginForm},
-     {path :'crearcuenta',component:CrearCuentaForm},
-     {path : 'checklist/:id',component:ChecklistForm}
+  { path: '', component: Home },
+  { path: 'contact', component: Contacto },
+  { path: 'sobrenosotros', component: AboutUs },
+  { path: 'login', component: LoginForm },
+  { path: 'crearcuenta', component: CrearCuentaForm },
+  { path: 'checklist', component: ChecklistForm, canActivate: [authGuard] },
+  { path: '**', redirectTo: '' },
 ];

@@ -1,7 +1,4 @@
 export interface Checklist {
-   id?: number,
-  trabajoId: number,
-  usuarioId: number ,
-
+  id: number;
+  usuarioId: number;
 }
-export type NuevoChecklist = Omit<Checklist, 'id'>;

@@ -1,49 +1,95 @@
 <form [formGroup]="form" (ngSubmit)="enviar()">
   <h2>Crear cuenta</h2>
 
-  <label for="nombre">Nombre</label>
-  <input id="nombre" formControlName="nombre" type="text" />
-  @if (invalido('nombre')) { <small>El nombre es obligatorio</small> }
+  <!-- Indicador de pasos -->
+  <ol class="pasos">
+    @for (t of titulos; track t; let i = $index) {
+      <li class="paso" [class.activo]="paso() === i" [class.hecho]="paso() > i">
+        <span class="circulo">{{ paso() > i ? '✓' : i + 1 }}</span>
+        <span class="etiqueta">{{ t }}</span>
+      </li>
+    }
+  </ol>
 
-  <label for="apellido">Apellido</label>
-  <input id="apellido" formControlName="apellido" type="text" />
-  @if (invalido('apellido')) { <small>El apellido es obligatorio</small> }
+  @switch (paso()) {
 
-  <label for="email">Email</label>
-  <input id="email" formControlName="email" type="email" />
-  @if (invalido('email')) { <small>Ingresá un email válido</small> }
+    @case (0) {
+      <div class="grupo">
+        <p class="ayuda">Con estos datos vas a ingresar a WatWay.</p>
 
-  <label for="password">Contraseña</label>
-  <input id="password" formControlName="password" type="password" />
-  @if (invalido('password')) { <small>Mínimo 6 caracteres</small> }
+        <label for="email">Email</label>
+        <input id="email" formControlName="email" type="email" autocomplete="email" />
+        @if (invalido('email')) { <small>Ingresá un email válido</small> }
 
-  <label for="posicionLaboral">Posición laboral</label>
-  <input id="posicionLaboral" formControlName="posicionLaboral" type="text"
-         placeholder="Ej: Mozo, Housekeeping, Cajero" />
-  @if (invalido('posicionLaboral')) { <small>Indicá tu posición laboral</small> }
+        <label for="password">Contraseña</label>
+        <input id="password" formControlName="password" type="password" autocomplete="new-password" />
+        @if (invalido('password')) { <small>Mínimo 6 caracteres</small> }
+      </div>
+    }
 
-  <label for="ciudadDestino">Ciudad destino</label>
-  <input id="ciudadDestino" formControlName="ciudadDestino" type="text"
-         placeholder="Ej: Wildwood, Ocean City" />
-  @if (invalido('ciudadDestino')) { <small>Indicá la ciudad de destino</small> }
+    @case (1) {
+      <div class="grupo">
+        <p class="ayuda">Contanos quién sos.</p>
 
-  <label for="sexo">Sexo</label>
-  <select id="sexo" formControlName="sexo">
-    <option value="">Seleccioná</option>
-    <option value="MASCULINO">Masculino</option>
-    <option value="FEMENINO">Femenino</option>
-  </select>
-  @if (invalido('sexo')) { <small>Seleccioná una opción</small> }
+        <label for="nombre">Nombre</label>
+        <input id="nombre" formControlName="nombre" type="text" />
+        @if (invalido('nombre')) { <small>El nombre es obligatorio (mínimo 2 letras)</small> }
 
-  <label for="descripcion">Descripción</label>
-  <textarea id="descripcion" formControlName="descripcion" rows="4"
-            placeholder="Contanos un poco sobre vos"></textarea>
-  @if (invalido('descripcion')) { <small>Máximo 500 caracteres</small> }
+        <label for="apellido">Apellido</label>
+        <input id="apellido" formControlName="apellido" type="text" />
+        @if (invalido('apellido')) { <small>El apellido es obligatorio</small> }
 
- 
-@if (error()) { <p class="error">{{ error() }}</p> }
+        <label for="sexo">Sexo</label>
+        <select id="sexo" formControlName="sexo">
+          <option value="">Seleccioná</option>
+          <option value="MASCULINO">Masculino</option>
+          <option value="FEMENINO">Femenino</option>
+          <option value="OTRO">Otro</option>
+        </select>
+        @if (invalido('sexo')) { <small>Seleccioná una opción</small> }
+      </div>
+    }
 
-<button type="submit" [disabled]="cargando()">
-  {{ cargando() ? 'Creando...' : 'Registrarme' }}
-</button>
+    @case (2) {
+      <div class="grupo">
+        <p class="ayuda">Esto nos sirve para encontrarte compañeros de viaje.</p>
+
+        <label for="posicionLaboral">Posición laboral</label>
+        <input id="posicionLaboral" formControlName="posicionLaboral" type="text"
+               placeholder="Ej: Mozo, Housekeeping, Cajero" />
+        @if (invalido('posicionLaboral')) { <small>Indicá tu posición laboral</small> }
+
+        <label for="ciudadDestino">Ciudad destino</label>
+        <input id="ciudadDestino" formControlName="ciudadDestino" type="text"
+               placeholder="Ej: Wildwood, Ocean City" />
+        @if (invalido('ciudadDestino')) { <small>Indicá la ciudad de destino</small> }
+
+        <label for="descripcion">Descripción (opcional)</label>
+        <textarea id="descripcion" formControlName="descripcion" rows="4"
+                  placeholder="Contanos un poco sobre vos"></textarea>
+        @if (invalido('descripcion')) { <small>Máximo 500 caracteres</small> }
+      </div>
+    }
+
+  }
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  <div class="botones">
+    @if (paso() > 0) {
+      <button type="button" class="atras" (click)="atras()">Atrás</button>
+    }
+
+    @if (paso() < ultimoPaso) {
+      <button type="button" class="siguiente" (click)="siguiente()">Siguiente</button>
+    } @else {
+      <button type="submit" [disabled]="cargando()">
+        {{ cargando() ? 'Creando...' : 'Registrarme' }}
+      </button>
+    }
+  </div>
+
+  <p class="ya-tengo">¿Ya tenés cuenta? <a routerLink="/login">Iniciá sesión</a></p>
 </form>

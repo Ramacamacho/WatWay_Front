@@ -1,22 +1,20 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
+import { HttpErrorResponse } from '@angular/common/http';
+import { DatePipe, DecimalPipe } from '@angular/common';
 import { ChecklistService } from '../../Servicios/checklist-service';
-import { ActivatedRoute } from '@angular/router';
 import { ChecklistResumen } from '../../Models/checklist-resumen';
 import { DOCUMENTO_LABEL } from '../../Models/documento';
 import { ChecklistItem } from '../../Models/checklist-item';
-import { DatePipe, DecimalPipe } from '@angular/common';
 
 @Component({
-  imports: [DatePipe ,DecimalPipe],
+  imports: [DatePipe, DecimalPipe],
   selector: 'app-checklist-form',
   styleUrl: './checklist-form.css',
   templateUrl: './checklist-form.html',
 })
-export class ChecklistForm implements OnInit{
+export class ChecklistForm implements OnInit {
   private checklistService = inject(ChecklistService);
-  private route = inject(ActivatedRoute);
 
-  checklistId = 0;
   resumen = signal<ChecklistResumen | null>(null);
   cargando = signal(true);
   error = signal<string | null>(null);
@@ -24,21 +22,24 @@ export class ChecklistForm implements OnInit{
   labels = DOCUMENTO_LABEL;
 
   ngOnInit() {
-    this.checklistId = Number(this.route.snapshot.paramMap.get('id'));
     this.cargarResumen();
   }
 
   cargarResumen() {
-    this.checklistService.obtenerResumen(this.checklistId).subscribe({
+    this.checklistService.obtenerMiResumen().subscribe({
       next: (data) => {
         this.resumen.set(data);
         this.cargando.set(false);
         this.error.set(null);
       },
-      error: (err) => {
-        console.error(err);
-        this.error.set('No se pudo cargar el checklist');
+      error: (err: HttpErrorResponse) => {
+        this.resumen.set(null);
         this.cargando.set(false);
+        this.error.set(
+          err.status === 404
+            ? 'Todavía no tenés un checklist creado'
+            : 'No se pudo cargar el checklist'
+        );
       },
     });
   }
@@ -46,10 +47,7 @@ export class ChecklistForm implements OnInit{
   toggle(item: ChecklistItem) {
     this.checklistService.marcarCompletado(item.id, !item.completado).subscribe({
       next: () => this.cargarResumen(),
-      error: (err) => {
-        console.error(err);
-        this.error.set('No se pudo actualizar el documento');
-      },
+      error: () => this.error.set('No se pudo actualizar el documento'),
     });
   }
 }

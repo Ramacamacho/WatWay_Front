@@ -1,19 +1,16 @@
-// services/checklist.service.ts
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Checklist, NuevoChecklist } from '../Models/checklist';
 import { ChecklistResumen } from '../Models/checklist-resumen';
 import { ChecklistItem } from '../Models/checklist-item';
-
 
 @Injectable({ providedIn: 'root' })
 export class ChecklistService {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8080/checklist';
 
-  crear(checklist: NuevoChecklist): Observable<Checklist> {
-    return this.http.post<Checklist>(this.apiUrl, checklist);
+  obtenerMiResumen(): Observable<ChecklistResumen> {
+    return this.http.get<ChecklistResumen>(`${this.apiUrl}/mi-resumen`);
   }
 
   obtenerResumen(checklistId: number): Observable<ChecklistResumen> {

@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { finalize, tap } from 'rxjs';
 import { AuthResponse } from '../Models/auth-response';
 import { RegisterRequest } from '../Models/register-request';
@@ -8,6 +8,10 @@ import { RegisterRequest } from '../Models/register-request';
 export class Auth {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8080/auth';
+
+  // Estado de sesión reactivo: se inicializa con lo que haya guardado
+  private logueado = signal(!!localStorage.getItem('accessToken'));
+  readonly estaLogueado = this.logueado.asReadonly();
 
   registrar(datos: RegisterRequest) {
     return this.http
@@ -39,17 +43,15 @@ export class Auth {
     return localStorage.getItem('refreshToken');
   }
 
-  estaLogueado(): boolean {
-    return !!this.getAccessToken();
-  }
-
   limpiarSesion() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    this.logueado.set(false);
   }
 
   private guardarTokens(res: AuthResponse) {
     localStorage.setItem('accessToken', res.accessToken);
     localStorage.setItem('refreshToken', res.refreshToken);
+    this.logueado.set(true);
   }
 }
