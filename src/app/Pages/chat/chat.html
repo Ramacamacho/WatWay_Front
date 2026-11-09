@@ -1,0 +1,36 @@
+<section class="chat">
+  <header class="chat-header">
+    <a routerLink="/match">← Volver</a>
+    <h2>{{ nombreOtro() }}</h2>
+  </header>
+
+  @if (cargando()) {
+    <p class="estado">Cargando conversación...</p>
+  } @else {
+    <div class="mensajes" #lista>
+      @for (m of mensajes(); track m.id) {
+        <div class="burbuja" [class.mia]="esMio(m)">
+          <p>{{ m.contenido }}</p>
+          <span class="hora">{{ m.fechaEnvio | date: 'dd/MM HH:mm' }}</span>
+        </div>
+      } @empty {
+        <p class="estado">Todavía no hay mensajes. ¡Mandá el primero!</p>
+      }
+    </div>
+  }
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  <form class="enviar" (ngSubmit)="enviar()">
+    <input
+      name="texto"
+      [(ngModel)]="texto"
+      placeholder="Escribí un mensaje..."
+      maxlength="500"
+      autocomplete="off"
+    />
+    <button type="submit" [disabled]="enviando() || !texto.trim()">Enviar</button>
+  </form>
+</section>

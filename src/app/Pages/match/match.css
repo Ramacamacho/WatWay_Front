@@ -7,3 +7,16 @@
 .botones button { flex: 1; padding: .8rem; font-size: 1rem; cursor: pointer; }
 .aviso-match { text-align: center; font-size: 1.3rem; font-weight: bold; }
 .error { color: crimson; }
+.btn-chat {
+  display: inline-block;
+  margin-top: 10px;
+  padding: 8px 16px;
+  border-radius: 8px;
+  background: #1976d2;
+  color: #fff;
+  text-decoration: none;
+}
+
+.btn-chat:hover {
+  background: #135ba1;
+}

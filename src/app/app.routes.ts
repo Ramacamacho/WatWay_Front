@@ -7,6 +7,7 @@ import { CrearCuentaForm } from './Pages/crear-cuenta-form/crear-cuenta-form';
 import { ChecklistForm } from './SecondPages/checklist-form/checklist-form';
 import { Match } from './Pages/match/match';
 import { authGuard } from './Servicios/auth-guard';
+import { Chat } from './Pages/chat/chat';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -16,5 +17,8 @@ export const routes: Routes = [
   { path: 'crearcuenta', component: CrearCuentaForm },
   { path: 'checklist', component: ChecklistForm, canActivate: [authGuard] },
   { path: 'match', component: Match, canActivate: [authGuard] },
+  { path: 'chat/:usuarioId', component: Chat, canActivate: [authGuard] },
+
+  // El comodín SIEMPRE va último: atrapa cualquier URL que no coincida con las de arriba
   { path: '**', redirectTo: '' },
 ];

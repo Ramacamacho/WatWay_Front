@@ -44,6 +44,9 @@
         <h2>{{ m.nombre }} {{ m.apellido }}</h2>
         <p>{{ m.posicionLaboral }} · {{ m.ciudadDestino }}</p>
         <p>{{ m.descripcion }}</p>
+        <a class="btn-chat"
+           [routerLink]="['/chat', m.id]"
+           [state]="{ nombre: m.nombre + ' ' + m.apellido }">💬 Chatear</a>
       </article>
     }
 

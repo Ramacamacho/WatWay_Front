@@ -1,11 +1,12 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
+import { RouterLink } from '@angular/router';
 import { MatchService } from '../../Servicios/match-service';
 import { UsuarioMatch } from '../../Models/usuario-match';
 
 @Component({
   selector: 'app-match',
-  imports: [],
+  imports: [RouterLink],
   styleUrl: './match.css',
   templateUrl: './match.html',
 })
