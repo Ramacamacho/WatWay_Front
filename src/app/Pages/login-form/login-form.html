@@ -1,44 +1,52 @@
 <section class="contenedor">
+    <div class="background-animation">
+        <!-- Nubes flotantes -->
+        <div class="cloud cloud-1"></div>
+        <div class="cloud cloud-2"></div>
+        <div class="cloud cloud-3"></div>
+        <div class="cloud cloud-4"></div>
+
+        <!-- Línea de órbita punteada circular -->
+        <div class="orbit-path"></div>
+
+        <!-- Avión girando en órbita -->
+        <div class="flying-plane"></div>
+    </div>
+
     <div class="pasaporte">
-
         <div class="portada">
-
             <p class="pais">REPÚBLICA DE WATWAY</p>
-
-
             <h1>WATWAY</h1>
-
             <h2>PASAPORTE</h2>
-
             <div class="linea"></div>
-
             <p class="subtitulo">WORK & TRAVEL</p>
-
         </div>
-    <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
-        <h3>Iniciar sesion</h3>
-        <div class="menu">
-            <div class="campos">
-                <label for="email"> Email :</label>
-            <input type="email" id="email" formControlName="email">
-            @if(formulario.get('email')?.touched && formulario.get('email')?.invalid){
-                <p>ingresa un email valido</p>
-            }
+        
+        <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
+            <h3>Iniciar sesion</h3>
+            <div class="menu">
+                <div class="campos">
+                    <label for="email"> Email :</label>
+                    <input type="email" id="email" formControlName="email">
+                    @if(formulario.get('email')?.touched && formulario.get('email')?.invalid){
+                        <p class="error">Ingresa un email válido</p>
+                    }
+                </div>
+
+                <div class="campos">
+                    <label for="password"> Contraseña :</label>
+                    <input type="password" id="password" formControlName="password">
+                    @if(formulario.get('password')?.touched && formulario.get('password')?.invalid){
+                        <p class="error">Ingresa una contraseña</p>
+                    }
+                </div>
+
+                <button type="submit"> Iniciar sesión </button>
+
+                <p class="registro"> ¿Todavía no tenés cuenta?
+                    <a routerLink="/crearcuenta">Registrate</a>
+                </p>
             </div>
-
-           <div class="campos">
-                <label for="password"> Contraseña :</label>
-            <input type="password" id="password" formControlName="password">
-            @if(formulario.get('password')?.touched && formulario.get('password')?.invalid){
-                <p>Ingresa una Contraseña</p>
-            }
-            </div>
-
-            <button type="submit"> Iniciar sesión </button>
-
-            <p class="registro"> ¿Todavía no tenés cuenta?</p>
-                <a routerLink="/crearcuenta">Registrate</a>
-        </div>
-    </form>
+        </form>
     </div>
 </section>
