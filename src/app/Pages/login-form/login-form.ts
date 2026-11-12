@@ -36,7 +36,7 @@ export class LoginForm {
     this.auth.login(email, password).subscribe({
       next: () => this.router.navigate(['/match']),
       error: () => {
-        this.error.set('Email o contraseña incorrectos');
+        this.error.set('Usuario o contraseña incorrectos');
         this.cargando.set(false);
       },
     });

@@ -21,7 +21,7 @@
             <div class="linea"></div>
             <p class="subtitulo">WORK & TRAVEL</p>
         </div>
-        
+
         <form [formGroup]="formulario" (ngSubmit)="onSubmit()">
             <h3>Iniciar sesion</h3>
             <div class="menu">
@@ -41,7 +41,15 @@
                     }
                 </div>
 
-                <button type="submit"> Iniciar sesión </button>
+                @if (error()) {
+                    <div class="alerta-error" role="alert">
+                        {{ error() }}
+                    </div>
+                }
+
+                <button type="submit" [disabled]="cargando()">
+                    {{ cargando() ? 'Verificando...' : 'Iniciar sesión' }}
+                </button>
 
                 <p class="registro"> ¿Todavía no tenés cuenta?
                     <a routerLink="/crearcuenta">Registrate</a>
