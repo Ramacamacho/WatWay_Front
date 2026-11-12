@@ -63,3 +63,57 @@
   max-width: 560px;
   height: auto;
 }
+
+.btn {
+  display: inline-block;
+  padding: 14px 28px;
+  background: var(--navy);
+  color: var(--cream);
+  border: 2px solid var(--navy);
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+}
+.btn:hover { background: #0c1528; }
+.btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 3px; }
+ 
+.btn--dorado {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+}
+.btn--dorado:hover { background: var(--cream); border-color: var(--cream); }
+
+.tarjetas {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+ 
+.tarjeta {
+  background: #f9f5e9;
+  border: 2px solid var(--navy);
+  padding: 28px;
+}
+.tarjeta h2 {
+  font-family: 'Bebas Neue', 'Oswald', sans-serif;
+  font-weight: 400;
+  font-size: 1.8rem;
+  line-height: 1;
+  color: var(--navy);
+  margin: 0 0 12px;
+}
+.tarjeta p {
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--navy);
+  margin: 0;
+}
+ 
+
+ 

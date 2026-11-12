@@ -5,7 +5,16 @@
 }
 
 @if (resumen(); as r) {
-  <section class="checklist">
+  <section class="checklist" [class.celebrando]="celebrando()">
+
+    @if (celebrando()) {
+      <div class="confetti" aria-hidden="true">
+        @for (n of confeti; track n) {
+          <span [style.--i]="n"></span>
+        }
+      </div>
+    }
+
     <h2 class="titulo">Mi checklist</h2>
 
     <div class="progreso">

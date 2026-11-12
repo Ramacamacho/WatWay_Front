@@ -1,8 +1,21 @@
-*{
-    padding: 0px;
-    margin: 0px;
-}
-body{
-     background-color: #F2E6D3;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
 }
 
+body {
+  background-color: beige;
+}
+
+/* Hace que cualquier página que cargue el router llene el espacio entre header y footer */
+main {
+  display: flex;
+  flex-direction: column;
+}
+main > router-outlet {
+  display: none;      /* es un elemento vacío, solo marca dónde se carga la página */
+}
+main > * {
+  flex: 1;
+}

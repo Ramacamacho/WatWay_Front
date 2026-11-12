@@ -1,0 +1,148 @@
+<main class="perfil-page">
+  @if (cargando()) {
+    <p class="estado">Cargando perfil…</p>
+  } @else if (perfil(); as p) {
+    <section class="card">
+      <header class="card-header">
+        <div class="avatar">{{ p.nombre.charAt(0) }}{{ p.apellido.charAt(0) }}</div>
+        <div class="card-titulo">
+          <h1>{{ p.nombre }} {{ p.apellido }}</h1>
+          <p>{{ p.email }}</p>
+        </div>
+        @if (!editando()) {
+          <button class="btn btn-primario" (click)="editar()">Editar perfil</button>
+        }
+      </header>
+
+      @if (exito()) {
+        <p class="alerta alerta-exito">{{ exito() }}</p>
+      }
+      @if (error()) {
+        <p class="alerta alerta-error">{{ error() }}</p>
+      }
+
+      @if (!editando()) {
+        <dl class="datos">
+          <div class="dato">
+            <dt>Posición laboral</dt>
+            <dd>{{ p.posicionLaboral }}</dd>
+          </div>
+          <div class="dato">
+            <dt>Ciudad destino</dt>
+            <dd>{{ p.ciudadDestino }}</dd>
+          </div>
+          <div class="dato">
+            <dt>Sexo</dt>
+            <dd>{{ etiquetaSexo[p.sexo] ?? p.sexo }}</dd>
+          </div>
+          <div class="dato dato-ancho">
+            <dt>Descripción</dt>
+            <dd>{{ p.descripcion || 'Sin descripción' }}</dd>
+          </div>
+        </dl>
+      } @else {
+        <form class="formulario" [formGroup]="form" (ngSubmit)="guardar()">
+          <div class="campo">
+            <label for="nombre">Nombre</label>
+            <input id="nombre" formControlName="nombre" />
+            @if (invalido('nombre')) {
+              <small class="msg-error">Ingresá tu nombre.</small>
+            }
+          </div>
+
+          <div class="campo">
+            <label for="apellido">Apellido</label>
+            <input id="apellido" formControlName="apellido" />
+            @if (invalido('apellido')) {
+              <small class="msg-error">Ingresá tu apellido.</small>
+            }
+          </div>
+
+          <div class="campo campo-ancho">
+            <label for="email">Email</label>
+            <input id="email" [value]="p.email" disabled />
+            <small class="ayuda">El email no se puede modificar.</small>
+          </div>
+
+          <div class="campo">
+            <label for="posicion">Posición laboral</label>
+            <input id="posicion" formControlName="posicionLaboral" />
+            @if (invalido('posicionLaboral')) {
+              <small class="msg-error">Campo obligatorio.</small>
+            }
+          </div>
+
+          <div class="campo">
+            <label for="ciudad">Ciudad destino</label>
+            <input id="ciudad" formControlName="ciudadDestino" />
+            @if (invalido('ciudadDestino')) {
+              <small class="msg-error">Campo obligatorio.</small>
+            }
+          </div>
+
+          <div class="campo campo-ancho">
+            <label for="sexo">Sexo</label>
+            <select id="sexo" formControlName="sexo">
+              @for (s of opcionesSexo; track s) {
+                <option [value]="s">{{ etiquetaSexo[s] }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="campo campo-ancho">
+            <label for="descripcion">Descripción</label>
+            <textarea id="descripcion" rows="4" formControlName="descripcion"></textarea>
+            <small class="ayuda">{{ form.controls.descripcion.value.length }}/500</small>
+          </div>
+
+          <div class="acciones campo-ancho">
+            <button type="button" class="btn btn-secundario" (click)="cancelarEdicion()">
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-primario" [disabled]="guardando() || form.pristine">
+              {{ guardando() ? 'Guardando…' : 'Guardar cambios' }}
+            </button>
+          </div>
+        </form>
+      }
+    </section>
+
+    <section class="card card-peligro">
+      <h2>Eliminar cuenta</h2>
+      <p>
+        Al eliminar tu cuenta dejarás de poder iniciar sesión.
+        Esta acción no se puede deshacer desde la app.
+      </p>
+      <button class="btn btn-peligro" (click)="abrirModal()">Eliminar cuenta</button>
+    </section>
+  }
+
+  @if (!cargando() && !perfil() && error()) {
+    <p class="alerta alerta-error">{{ error() }}</p>
+  }
+
+  @if (modalAbierto()) {
+    <div class="overlay" (click)="cerrarModal()">
+      <div class="modal" (click)="$event.stopPropagation()">
+        <h3>¿Eliminar tu cuenta?</h3>
+        <p>Para confirmar, escribí tu email: <strong>{{ perfil()?.email }}</strong></p>
+        <input
+          type="email"
+          [value]="confirmacion()"
+          (input)="onConfirmacion($event)"
+          placeholder="tu@email.com"
+        />
+        <div class="acciones">
+          <button class="btn btn-secundario" (click)="cerrarModal()">Cancelar</button>
+          <button
+            class="btn btn-peligro"
+            [disabled]="!puedeEliminar || eliminando()"
+            (click)="eliminar()"
+          >
+            {{ eliminando() ? 'Eliminando…' : 'Eliminar definitivamente' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</main>

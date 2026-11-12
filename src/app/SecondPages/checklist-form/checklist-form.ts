@@ -1,4 +1,4 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { DecimalPipe } from '@angular/common';
 import { ChecklistService } from '../../Servicios/checklist-service';
@@ -12,12 +12,13 @@ import { ChecklistItem } from '../../Models/checklist-item';
   styleUrl: './checklist-form.css',
   templateUrl: './checklist-form.html',
 })
-export class ChecklistForm implements OnInit {
+export class ChecklistForm implements OnInit, OnDestroy {
   private checklistService = inject(ChecklistService);
 
   resumen = signal<ChecklistResumen | null>(null);
   cargando = signal(true);
   error = signal<string | null>(null);
+  celebrando = signal(false);
 
   labels = DOCUMENTO_LABEL;
 
@@ -35,13 +36,30 @@ export class ChecklistForm implements OnInit {
     return (Object.keys(DOCUMENTO_LABEL) as Documento[]).filter(d => !usados.has(d));
   }
 
+  confeti = Array.from({ length: 200 }, (_, i) => i + 1);
+
+  private timerCelebracion?: ReturnType<typeof setTimeout>;
+
   ngOnInit() {
     this.cargarResumen();
+  }
+
+  ngOnDestroy() {
+    clearTimeout(this.timerCelebracion);
   }
 
   cargarResumen() {
     this.checklistService.obtenerMiResumen().subscribe({
       next: (data) => {
+        const anterior = this.resumen()?.progreso;
+
+        // Celebra solo si ya había un resumen con menos de 100% y ahora llegó a 100%
+        if (anterior !== undefined && anterior < 100 && data.progreso >= 100) {
+          this.celebrar();
+        } else if (data.progreso < 100) {
+          this.celebrando.set(false);
+        }
+
         this.resumen.set(data);
         this.cargando.set(false);
         this.error.set(null);
@@ -117,5 +135,11 @@ export class ChecklistForm implements OnInit {
         this.error.set('No se pudo quitar el documento');
       },
     });
+  }
+
+  private celebrar() {
+    clearTimeout(this.timerCelebracion);
+    this.celebrando.set(true);
+    this.timerCelebracion = setTimeout(() => this.celebrando.set(false), 3500);
   }
 }
