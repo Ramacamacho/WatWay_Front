@@ -58,6 +58,11 @@ tr.inactivo td {
   opacity: 0.5;
 }
 
+/* El botón Reactivar se ve normal aunque la fila esté apagada */
+tr.inactivo td.acciones {
+  opacity: 1;
+}
+
 .chip {
   display: inline-block;
   padding: 2px 8px;
@@ -73,11 +78,19 @@ tr.inactivo td {
   font-weight: 600;
 }
 
+/* Los botones van en una sola fila. La celda sigue siendo una celda
+   de tabla (sin display:flex) para que no se rompan los bordes. */
 .acciones {
-  display: flex;
-  gap: 0.5rem;
-  align-items: center;
-  flex-wrap: wrap;
+  white-space: nowrap;
+}
+
+.acciones > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.acciones > * + * {
+  margin-left: 0.5rem;
 }
 
 .nota {

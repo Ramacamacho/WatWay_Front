@@ -10,6 +10,7 @@ import { authGuard } from './Servicios/auth-guard';
 import { Chat } from './Pages/chat/chat';
 import { Admin } from './Pages/admin/admin';
 import { adminGuard } from './Servicios/admin-guard';
+import { Perfilpage } from './Pages/perfilpage/perfilpage';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -21,6 +22,7 @@ export const routes: Routes = [
   { path: 'match', component: Match, canActivate: [authGuard] },
   { path: 'chat/:usuarioId', component: Chat, canActivate: [authGuard] },
   { path: 'admin', component: Admin, canActivate: [adminGuard] },
+  { path: 'perfil', component: Perfilpage, canActivate: [authGuard] },
 
   // El comodín SIEMPRE va último: atrapa cualquier URL que no coincida con las de arriba
   { path: '**', redirectTo: '' },

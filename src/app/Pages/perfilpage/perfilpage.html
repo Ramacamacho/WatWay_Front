@@ -1,0 +1,133 @@
+<section class="perfil">
+  @if (cargando()) {
+    <p class="estado">Cargando perfil...</p>
+  } @else if (perfil(); as p) {
+    <div class="tarjeta">
+      <div class="cabecera">
+        <span class="avatar">{{ p.nombre.charAt(0) }}</span>
+        <div>
+          <h1>{{ p.nombre }} {{ p.apellido }}</h1>
+          <p class="email">{{ p.email }}</p>
+        </div>
+      </div>
+
+      @if (exito()) {
+        <p class="mensaje exito">{{ exito() }}</p>
+      }
+      @if (error()) {
+        <p class="mensaje error">{{ error() }}</p>
+      }
+
+      @if (!editando()) {
+        <dl class="datos">
+          <dt>Sexo</dt>
+          <dd>{{ etiquetaSexo[p.sexo] || p.sexo }}</dd>
+          <dt>Puesto</dt>
+          <dd>{{ p.posicionLaboral }}</dd>
+          <dt>Destino</dt>
+          <dd>{{ p.ciudadDestino }}</dd>
+          <dt>Sobre mí</dt>
+          <dd>{{ p.descripcion || 'Sin descripción' }}</dd>
+        </dl>
+
+        @if (!cambiandoPassword()) {
+          <div class="acciones">
+            <button class="btn btn-gold" (click)="editar()">Editar perfil</button>
+            <button class="btn" (click)="abrirCambioPassword()">Cambiar contraseña</button>
+            <button class="btn btn-peligro" (click)="abrirModal()">Eliminar cuenta</button>
+          </div>
+        } @else {
+          <form [formGroup]="passForm" (ngSubmit)="guardarPassword()" class="formulario">
+            <h2 class="subtitulo">Cambiar contraseña</h2>
+
+            @if (errorPassword()) {
+              <p class="mensaje error">{{ errorPassword() }}</p>
+            }
+
+            <label for="actual">Contraseña actual</label>
+            <input id="actual" type="password" formControlName="actual" autocomplete="current-password" />
+            @if (invalidoPass('actual')) { <small>Ingresá tu contraseña actual</small> }
+
+            <label for="nueva">Nueva contraseña</label>
+            <input id="nueva" type="password" formControlName="nueva" autocomplete="new-password" />
+            @if (invalidoPass('nueva')) { <small>Mínimo 6 caracteres</small> }
+
+            <label for="repetir">Repetir nueva contraseña</label>
+            <input id="repetir" type="password" formControlName="repetir" autocomplete="new-password" />
+            @if (noCoinciden) { <small>Las contraseñas no coinciden</small> }
+
+            <div class="acciones">
+              <button type="submit" class="btn btn-gold" [disabled]="guardandoPassword()">
+                {{ guardandoPassword() ? 'Guardando...' : 'Guardar contraseña' }}
+              </button>
+              <button type="button" class="btn" (click)="cancelarCambioPassword()" [disabled]="guardandoPassword()">Cancelar</button>
+            </div>
+          </form>
+        }
+      } @else {
+        <form [formGroup]="form" (ngSubmit)="guardar()" class="formulario">
+          <label for="nombre">Nombre</label>
+          <input id="nombre" formControlName="nombre" />
+          @if (invalido('nombre')) { <small>El nombre es obligatorio</small> }
+
+          <label for="apellido">Apellido</label>
+          <input id="apellido" formControlName="apellido" />
+          @if (invalido('apellido')) { <small>El apellido es obligatorio</small> }
+
+          <label for="sexo">Sexo</label>
+          <select id="sexo" formControlName="sexo">
+            @for (s of opcionesSexo; track s) {
+              <option [value]="s">{{ etiquetaSexo[s] }}</option>
+            }
+          </select>
+
+          <label for="posicionLaboral">Puesto</label>
+          <select id="posicionLaboral" formControlName="posicionLaboral">
+            @for (pos of posiciones; track pos) {
+              <option [value]="pos">{{ pos }}</option>
+            }
+          </select>
+
+          <label for="ciudadDestino">Destino</label>
+          <select id="ciudadDestino" formControlName="ciudadDestino">
+            @for (c of ciudades; track c) {
+              <option [value]="c">{{ c }}</option>
+            }
+          </select>
+
+          <label for="descripcion">Sobre mí</label>
+          <textarea id="descripcion" formControlName="descripcion" rows="4"></textarea>
+          @if (invalido('descripcion')) { <small>Máximo 500 caracteres</small> }
+
+          <div class="acciones">
+            <button type="submit" class="btn btn-gold" [disabled]="guardando()">
+              {{ guardando() ? 'Guardando...' : 'Guardar' }}
+            </button>
+            <button type="button" class="btn" (click)="cancelarEdicion()" [disabled]="guardando()">Cancelar</button>
+          </div>
+        </form>
+      }
+    </div>
+
+    @if (modalAbierto()) {
+      <div class="modal-fondo" (click)="cerrarModal()">
+        <div class="modal" (click)="$event.stopPropagation()">
+          <h2>Eliminar cuenta</h2>
+          <p>Tu cuenta se va a dar de baja y no vas a poder volver a ingresar. Para confirmar, escribí tu contraseña:</p>
+          <input type="password" (input)="onConfirmacion($event)" placeholder="tu contraseña" autocomplete="current-password" />
+          @if (errorModal()) {
+            <p class="mensaje error">{{ errorModal() }}</p>
+          }
+          <div class="acciones">
+            <button class="btn btn-peligro" (click)="eliminar()" [disabled]="!puedeEliminar || eliminando()">
+              {{ eliminando() ? 'Eliminando...' : 'Eliminar definitivamente' }}
+            </button>
+            <button class="btn" (click)="cerrarModal()" [disabled]="eliminando()">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    }
+  } @else {
+    <p class="mensaje error">{{ error() }}</p>
+  }
+</section>

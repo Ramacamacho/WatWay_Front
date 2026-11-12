@@ -1,26 +1,68 @@
+:host {
+  --navy: #14213d;
+  --gold: #b08d3c;
+  --cream: #f2e6d3;
+}
+
 .chat {
   max-width: 600px;
   margin: 20px auto;
   height: 80vh;
   display: flex;
   flex-direction: column;
-  border: 1px solid #ddd;
-  border-radius: 12px;
+  border: 1px solid #e3d6c0;
+  border-radius: 14px;
   overflow: hidden;
-  background: #fff;
+  background: #fffaf2;
+  box-shadow: 0 6px 20px rgba(20, 33, 61, 0.12);
 }
 
 .chat-header {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
   padding: 12px 16px;
-  border-bottom: 1px solid #ddd;
+  background: var(--navy);
+  color: var(--cream);
 }
 
 .chat-header h2 {
   margin: 0;
-  font-size: 1.2rem;
+  font-size: 1.15rem;
+}
+
+/* "Volver" como botón, no como link azul */
+.btn-volver {
+  padding: 6px 12px;
+  border: 2px solid var(--gold);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--gold);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-volver:hover {
+  background: var(--gold);
+  color: var(--navy);
+}
+
+/* Círculo con la inicial del otro usuario */
+.avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gold);
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  text-transform: uppercase;
+  flex-shrink: 0;
 }
 
 .mensajes {
@@ -30,21 +72,24 @@
   display: flex;
   flex-direction: column;
   gap: 8px;
-  background: #f5f5f5;
+  background: var(--cream);
 }
 
 .burbuja {
   max-width: 70%;
   padding: 8px 12px;
-  border-radius: 12px;
+  border-radius: 14px 14px 14px 4px;
   background: #fff;
+  color: var(--navy);
   align-self: flex-start;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .burbuja.mia {
   align-self: flex-end;
-  background: #d1e7ff;
+  border-radius: 14px 14px 4px 14px;
+  background: var(--navy);
+  color: var(--cream);
 }
 
 .burbuja p {
@@ -55,18 +100,23 @@
 .hora {
   display: block;
   font-size: 0.7rem;
-  color: #888;
+  color: #8a8a8a;
   text-align: right;
   margin-top: 4px;
 }
 
+.burbuja.mia .hora {
+  color: #c9bfae;
+}
+
 .estado {
   text-align: center;
-  color: #888;
+  color: #8a8a8a;
+  margin-top: 16px;
 }
 
 .error {
-  color: #c00;
+  color: #a33a2c;
   text-align: center;
   margin: 8px;
 }
@@ -75,26 +125,89 @@
   display: flex;
   gap: 8px;
   padding: 12px;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #e3d6c0;
+  background: #fffaf2;
 }
 
 .enviar input {
   flex: 1;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  padding: 10px 14px;
+  border: 1px solid #d8c9ae;
+  border-radius: 20px;
+  outline: none;
+}
+
+.enviar input:focus {
+  border-color: var(--gold);
 }
 
 .enviar button {
   padding: 10px 18px;
   border: none;
-  border-radius: 8px;
-  background: #1976d2;
-  color: #fff;
+  border-radius: 20px;
+  background: var(--gold);
+  color: var(--navy);
+  font-weight: 600;
   cursor: pointer;
 }
 
+.enviar button:hover:not(:disabled) {
+  background: var(--navy);
+  color: var(--cream);
+}
+
 .enviar button:disabled {
-  background: #aaa;
+  background: #ccc;
+  color: #777;
   cursor: not-allowed;
+}
+
+/* ---------- Editar / borrar mensajes propios ---------- */
+.burbuja-acciones {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  margin-top: 4px;
+  font-size: 0.75rem;
+}
+
+.burbuja-acciones button {
+  padding: 2px 8px;
+  border: 1px solid currentColor;
+  border-radius: 6px;
+  background: transparent;
+  color: inherit;
+  font-size: 0.75rem;
+  cursor: pointer;
+  opacity: 0.75;
+}
+
+.burbuja-acciones button:hover:not(:disabled) {
+  opacity: 1;
+}
+
+.burbuja-acciones button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Las acciones aparecen al pasar el mouse para no ensuciar el chat */
+.burbuja.mia:not(.editando) .burbuja-acciones {
+  visibility: hidden;
+}
+
+.burbuja.mia:hover .burbuja-acciones,
+.burbuja.mia:focus-within .burbuja-acciones {
+  visibility: visible;
+}
+
+.editar-input {
+  width: 100%;
+  min-width: 200px;
+  padding: 6px 10px;
+  border: 1px solid var(--gold);
+  border-radius: 8px;
+  font: inherit;
+  box-sizing: border-box;
 }

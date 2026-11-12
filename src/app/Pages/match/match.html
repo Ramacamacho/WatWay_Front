@@ -42,11 +42,24 @@
     @for (m of matches(); track m.id) {
       <article class="tarjeta">
         <h2>{{ m.nombre }} {{ m.apellido }}</h2>
-        <p>{{ m.posicionLaboral }} · {{ m.ciudadDestino }}</p>
-        <p>{{ m.descripcion }}</p>
-        <a class="btn-chat"
-           [routerLink]="['/chat', m.id]"
-           [state]="{ nombre: m.nombre + ' ' + m.apellido }">💬 Chatear</a>
+        <p><strong>Sexo:</strong> {{ m.sexo }}</p>
+        <p><strong>Puesto:</strong> {{ m.posicionLaboral }}</p>
+        <p><strong>Destino:</strong> {{ m.ciudadDestino }}</p>
+        <p><strong>Sobre mí:</strong> {{ m.descripcion || 'Sin descripción' }}</p>
+
+        <div class="acciones-match">
+          <a class="btn-chat"
+             [routerLink]="['/chat', m.id]"
+             [state]="{ nombre: m.nombre + ' ' + m.apellido }">💬 Chatear</a>
+
+          @if (confirmandoId() === m.id) {
+            <span class="confirmar">¿Eliminar match?</span>
+            <button class="btn-eliminar" (click)="eliminarMatch(m)" [disabled]="eliminando()">Sí</button>
+            <button class="btn-cancelar" (click)="cancelarEliminar()" [disabled]="eliminando()">No</button>
+          } @else {
+            <button class="btn-eliminar" (click)="pedirConfirmacion(m.id)">Eliminar match</button>
+          }
+        </div>
       </article>
     }
 

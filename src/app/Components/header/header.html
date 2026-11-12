@@ -1,11 +1,12 @@
 <header class="header">
   <nav class="mae">
-    <p class="logo" routerLink="/">inicio</p>
+    <p class="logo" routerLink="/">Inicio</p>
     <p class="link" routerLink="/sobrenosotros">Sobre nosotros</p>
 
     @if (estaLogueado()) {
       <p class="link" routerLink="/checklist">Checklist</p>
       <p class="link" routerLink="/match">Match</p>
+      <p class="link" routerLink="/perfil">Mi perfil</p>
       @if (esAdmin()) {
         <p class="link" routerLink="/admin">Admin</p>
       }

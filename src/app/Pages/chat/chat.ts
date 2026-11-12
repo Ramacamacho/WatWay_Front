@@ -27,6 +27,12 @@ export class Chat implements OnInit, OnDestroy {
   error = signal('');
   nombre = signal('Chat');
 
+  // Edición de un mensaje propio
+  editandoId = signal<number | null>(null);
+  textoEdicion = '';
+  // Id del mensaje al que se le pide confirmación para borrar
+  borrandoId = signal<number | null>(null);
+
   private intervalo?: ReturnType<typeof setInterval>;
 
   ngOnInit() {
@@ -85,6 +91,53 @@ export class Chat implements OnInit, OnDestroy {
           this.error.set('No se pudo enviar el mensaje');
         },
       });
+  }
+
+  // ---------- Editar ----------
+  empezarEdicion(m: Mensaje) {
+    this.borrandoId.set(null);
+    this.editandoId.set(m.id);
+    this.textoEdicion = m.contenido;
+  }
+
+  cancelarEdicion() {
+    this.editandoId.set(null);
+    this.textoEdicion = '';
+  }
+
+  guardarEdicion(m: Mensaje) {
+    const contenido = this.textoEdicion.trim();
+    if (!contenido) return;
+    this.chatService.editarMensaje(m.id, contenido).subscribe({
+      next: (editado) => {
+        this.mensajes.update((lista) => lista.map((x) => (x.id === editado.id ? editado : x)));
+        this.cancelarEdicion();
+      },
+      error: () => this.error.set('No se pudo editar el mensaje'),
+    });
+  }
+
+  // ---------- Borrar ----------
+  pedirBorrar(m: Mensaje) {
+    this.cancelarEdicion();
+    this.borrandoId.set(m.id);
+  }
+
+  cancelarBorrar() {
+    this.borrandoId.set(null);
+  }
+
+  borrar(m: Mensaje) {
+    this.chatService.eliminarMensaje(m.id).subscribe({
+      next: () => {
+        this.mensajes.update((lista) => lista.filter((x) => x.id !== m.id));
+        this.borrandoId.set(null);
+      },
+      error: () => {
+        this.borrandoId.set(null);
+        this.error.set('No se pudo borrar el mensaje');
+      },
+    });
   }
 
   // Si el emisor no es el otro usuario, el mensaje es mío

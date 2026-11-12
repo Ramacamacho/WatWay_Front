@@ -17,6 +17,11 @@ export class AdminService {
     return this.http.delete(`${this.apiUrl}/usuarios/${usuarioId}`, { responseType: 'text' });
   }
 
+  // PUT /admin/usuarios/{id}/activar -> vuelve a poner activo = true
+  reactivarUsuario(usuarioId: number) {
+    return this.http.put(`${this.apiUrl}/usuarios/${usuarioId}/activar`, {}, { responseType: 'text' });
+  }
+
   // POST /admin/usuarios/{credentialId}/rol/ADMIN
   hacerAdmin(credentialId: number) {
     return this.http.post(`${this.apiUrl}/usuarios/${credentialId}/rol/ADMIN`, {}, { responseType: 'text' });

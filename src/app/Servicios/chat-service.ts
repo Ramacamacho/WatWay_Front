@@ -17,4 +17,14 @@ export class ChatService {
   enviarMensaje(body: EnviarMensaje): Observable<Mensaje> {
     return this.http.post<Mensaje>(`${this.apiUrl}/enviar`, body);
   }
+
+  // PUT /chat/mensajes/{id} -> editar un mensaje propio
+  editarMensaje(mensajeId: number, contenido: string): Observable<Mensaje> {
+    return this.http.put<Mensaje>(`${this.apiUrl}/mensajes/${mensajeId}`, { contenido });
+  }
+
+  // DELETE /chat/mensajes/{id} -> borrar un mensaje propio
+  eliminarMensaje(mensajeId: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/mensajes/${mensajeId}`);
+  }
 }

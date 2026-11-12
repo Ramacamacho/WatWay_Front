@@ -79,6 +79,23 @@ export class Admin implements OnInit {
     });
   }
 
+  reactivar(u: AdminUsuario) {
+    this.limpiarMensajes();
+    this.procesandoId.set(u.usuarioId);
+
+    this.adminService.reactivarUsuario(u.usuarioId).subscribe({
+      next: () => {
+        this.procesandoId.set(null);
+        this.exito.set(`${u.nombre} ${u.apellido} fue reactivado.`);
+        this.cargar();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.procesandoId.set(null);
+        this.error.set(this.mensajeError(err, 'No se pudo reactivar el usuario.'));
+      },
+    });
+  }
+
   hacerAdmin(u: AdminUsuario) {
     if (u.credentialId === null) return;
     this.limpiarMensajes();

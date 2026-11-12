@@ -20,6 +20,9 @@ export class Match implements OnInit {
   sinCandidatos = signal(false);
   hayMatch = signal(false);
   error = signal('');
+  // Id del match al que se le pide confirmación para eliminar
+  confirmandoId = signal<number | null>(null);
+  eliminando = signal(false);
 
   ngOnInit() {
     this.cargarCandidato();
@@ -84,6 +87,32 @@ export class Match implements OnInit {
     this.matchService.getMatches().subscribe({
       next: lista => this.matches.set(lista),
       error: () => this.error.set('No se pudieron cargar tus matches'),
+    });
+  }
+
+  pedirConfirmacion(id: number) {
+    this.confirmandoId.set(id);
+  }
+
+  cancelarEliminar() {
+    this.confirmandoId.set(null);
+  }
+
+  eliminarMatch(m: UsuarioMatch) {
+    this.eliminando.set(true);
+    this.error.set('');
+
+    this.matchService.eliminarMatch(m.id).subscribe({
+      next: () => {
+        this.matches.update(lista => lista.filter(x => x.id !== m.id));
+        this.confirmandoId.set(null);
+        this.eliminando.set(false);
+      },
+      error: () => {
+        this.error.set('No se pudo eliminar el match');
+        this.confirmandoId.set(null);
+        this.eliminando.set(false);
+      },
     });
   }
 

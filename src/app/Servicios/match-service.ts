@@ -24,4 +24,8 @@ export class MatchService {
   getMatches() {
     return this.http.get<UsuarioMatch[]>(`${this.apiUrl}/matches`);
   }
+
+  eliminarMatch(id: number) {
+    return this.http.delete(`${this.apiUrl}/${id}`, { responseType: 'text' });
+  }
 }

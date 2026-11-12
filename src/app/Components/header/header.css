@@ -34,8 +34,6 @@
 /* "Inicio" a la izquierda, con estilo de logo */
 .logo {
   margin-right: auto ;
-  font-family: 'Bebas Neue', 'Oswald', sans-serif;
-  font-size: 1.4rem;
   color: var(--gold) ;
 }
 

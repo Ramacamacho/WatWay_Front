@@ -173,3 +173,76 @@ input[type='checkbox']:focus-visible + .caja {
 .item-label:hover .caja {
   border-color: var(--verde);
 }
+
+/* ---------- Acciones de cada item (fecha y quitar) ---------- */
+.item-acciones {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.fecha input[type='date'] {
+  margin-left: 4px;
+  padding: 3px 6px;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  font: inherit;
+  font-size: 0.8rem;
+  color: var(--texto);
+}
+
+.btn-mini {
+  padding: 4px 9px;
+  border: 1px solid var(--borde);
+  border-radius: 6px;
+  background: #fff;
+  color: var(--texto-suave);
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.btn-mini:hover {
+  border-color: #9ca3af;
+  color: var(--texto);
+}
+
+.btn-mini.peligro {
+  border-color: #fca5a5;
+  color: #dc2626;
+}
+
+/* ---------- Agregar documento ---------- */
+.agregar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.agregar select {
+  flex: 1;
+  min-width: 180px;
+}
+
+.agregar select,
+.agregar input {
+  padding: 8px 10px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  font: inherit;
+}
+
+.btn-agregar {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  background: var(--verde);
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-agregar:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}

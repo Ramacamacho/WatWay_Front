@@ -1,6 +1,7 @@
 <section class="chat">
   <header class="chat-header">
-    <a routerLink="/match">← Volver</a>
+    <a class="btn-volver" routerLink="/match">← Volver</a>
+    <span class="avatar">{{ nombreOtro().charAt(0) }}</span>
     <h2>{{ nombreOtro() }}</h2>
   </header>
 
@@ -9,9 +10,36 @@
   } @else {
     <div class="mensajes" #lista>
       @for (m of mensajes(); track m.id) {
-        <div class="burbuja" [class.mia]="esMio(m)">
-          <p>{{ m.contenido }}</p>
-          <span class="hora">{{ m.fechaEnvio | date: 'dd/MM HH:mm' }}</span>
+        <div class="burbuja" [class.mia]="esMio(m)" [class.editando]="editandoId() === m.id || borrandoId() === m.id">
+          @if (editandoId() === m.id) {
+            <input
+              class="editar-input"
+              [(ngModel)]="textoEdicion"
+              maxlength="500"
+              (keydown.enter)="guardarEdicion(m)"
+              (keydown.escape)="cancelarEdicion()"
+            />
+            <div class="burbuja-acciones">
+              <button (click)="guardarEdicion(m)" [disabled]="!textoEdicion.trim()">Guardar</button>
+              <button (click)="cancelarEdicion()">Cancelar</button>
+            </div>
+          } @else {
+            <p>{{ m.contenido }}</p>
+            <span class="hora">{{ m.fechaEnvio | date: 'dd/MM HH:mm' }}</span>
+
+            @if (esMio(m)) {
+              <div class="burbuja-acciones">
+                @if (borrandoId() === m.id) {
+                  <span>¿Borrar?</span>
+                  <button (click)="borrar(m)">Sí</button>
+                  <button (click)="cancelarBorrar()">No</button>
+                } @else {
+                  <button (click)="empezarEdicion(m)">Editar</button>
+                  <button (click)="pedirBorrar(m)">Borrar</button>
+                }
+              </div>
+            }
+          }
         </div>
       } @empty {
         <p class="estado">Todavía no hay mensajes. ¡Mandá el primero!</p>

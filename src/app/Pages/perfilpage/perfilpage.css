@@ -1,0 +1,182 @@
+:host {
+  --navy: #14213d;
+  --gold: #b08d3c;
+  --cream: #f2e6d3;
+  --rojo: #a33a2c;
+  display: block;
+  padding: 2rem 1rem;
+}
+
+.perfil {
+  max-width: 560px;
+  margin: 0 auto;
+  color: var(--navy);
+}
+
+.tarjeta {
+  background: #fffaf2;
+  border: 1px solid #e3d6c0;
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 6px 20px rgba(20, 33, 61, 0.1);
+}
+
+.cabecera {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.cabecera h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--navy);
+  color: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.email {
+  margin: 0.2rem 0 0;
+  opacity: 0.7;
+}
+
+.datos {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 0.6rem 1rem;
+  margin: 0 0 1.5rem;
+}
+
+.datos dt {
+  font-weight: 700;
+}
+
+.datos dd {
+  margin: 0;
+}
+
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.formulario label {
+  font-weight: 600;
+  margin-top: 0.5rem;
+}
+
+.formulario input,
+.formulario select,
+.formulario textarea,
+.modal input {
+  padding: 0.6rem;
+  border: 1px solid #d8c9ae;
+  border-radius: 8px;
+  font: inherit;
+  background: #fff;
+}
+
+.formulario small {
+  color: var(--rojo);
+}
+
+.acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 1rem;
+}
+
+.btn {
+  padding: 0.55rem 1.1rem;
+  border: 2px solid var(--navy);
+  border-radius: 8px;
+  background: transparent;
+  color: var(--navy);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-gold {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+
+.btn-peligro {
+  border-color: var(--rojo);
+  color: var(--rojo);
+}
+
+.btn:hover:not(:disabled) {
+  opacity: 0.85;
+}
+
+.btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.mensaje {
+  padding: 0.7rem 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.exito { background: #dfe9d6; color: #2f5a1f; }
+.error { background: #f3d6d1; color: var(--rojo); }
+
+.estado {
+  text-align: center;
+  opacity: 0.7;
+}
+
+/* ---------- Modal de eliminar cuenta ---------- */
+.modal-fondo {
+  position: fixed;
+  inset: 0;
+  background: rgba(20, 33, 61, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal {
+  background: #fffaf2;
+  border-radius: 14px;
+  padding: 1.5rem;
+  max-width: 420px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.modal h2 {
+  margin: 0;
+  color: var(--rojo);
+}
+
+.email-confirmar {
+  font-weight: 700;
+  margin: 0;
+}
+
+.subtitulo {
+  margin: 0 0 0.5rem;
+  font-size: 1.15rem;
+}

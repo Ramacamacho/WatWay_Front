@@ -36,7 +36,7 @@
                 @for (rol of u.roles; track rol) {
                   <span class="chip" [class.chip-admin]="rol === 'ADMIN'">{{ rol }}</span>
                 } @empty {
-                  <span class="chip">SIN ROL</span>
+                  <span class="chip">USUARIO</span>
                 }
               </td>
               <td>{{ u.activo ? 'Activo' : 'Desactivado' }}</td>
@@ -44,7 +44,9 @@
                 @if (esYo(u)) {
                   <span class="nota">Sos vos</span>
                 } @else if (!u.activo) {
-                  <span class="nota">—</span>
+                  <button class="btn"
+                          (click)="reactivar(u)"
+                          [disabled]="procesandoId() === u.usuarioId">Reactivar</button>
                 } @else if (confirmandoId() === u.usuarioId) {
                   <span class="nota">¿Seguro?</span>
                   <button class="btn btn-peligro"

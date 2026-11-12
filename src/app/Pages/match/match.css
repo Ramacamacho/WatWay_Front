@@ -20,3 +20,50 @@
 .btn-chat:hover {
   background: #135ba1;
 }
+
+.acciones-match {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.acciones-match .btn-chat {
+  margin-top: 0;
+}
+
+.btn-eliminar,
+.btn-cancelar {
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-eliminar {
+  border: 1px solid #a33a2c;
+  background: transparent;
+  color: #a33a2c;
+}
+
+.btn-eliminar:hover:not(:disabled) {
+  background: #a33a2c;
+  color: #fff;
+}
+
+.btn-cancelar {
+  border: 1px solid #999;
+  background: transparent;
+  color: #555;
+}
+
+.btn-eliminar:disabled,
+.btn-cancelar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.confirmar {
+  font-size: 0.9rem;
+}

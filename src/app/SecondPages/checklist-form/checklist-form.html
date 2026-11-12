@@ -27,9 +27,18 @@
             <span class="caja"></span>
             <span class="item-texto">{{ labels[item.documento] }}</span>
           </label>
-          @if (item.fechaLimite) {
-            <span class="fecha">Límite: {{ item.fechaLimite | date:'dd/MM/yyyy' }}</span>
-          }
+          <div class="item-acciones">
+            <label class="fecha">
+              Límite
+              <input type="date" [value]="item.fechaLimite ?? ''" (change)="cambiarFecha(item, $event)" />
+            </label>
+            @if (confirmandoId() === item.id) {
+              <button class="btn-mini peligro" (click)="quitar(item)">Quitar</button>
+              <button class="btn-mini" (click)="cancelarQuitar()">No</button>
+            } @else {
+              <button class="btn-mini" title="Quitar del checklist" (click)="pedirConfirmacion(item.id)">✕</button>
+            }
+          </div>
         </li>
       } @empty {
         <li class="vacio">No te falta ningún documento 🎉</li>
@@ -45,10 +54,34 @@
             <span class="caja"></span>
             <span class="item-texto">{{ labels[item.documento] }}</span>
           </label>
+          <div class="item-acciones">
+            @if (confirmandoId() === item.id) {
+              <button class="btn-mini peligro" (click)="quitar(item)">Quitar</button>
+              <button class="btn-mini" (click)="cancelarQuitar()">No</button>
+            } @else {
+              <button class="btn-mini" title="Quitar del checklist" (click)="pedirConfirmacion(item.id)">✕</button>
+            }
+          </div>
         </li>
       } @empty {
         <li class="vacio">Todavía no completaste ninguno</li>
       }
     </ul>
+
+    <h3 class="subtitulo">Agregar documento</h3>
+    @if (disponibles().length > 0) {
+      <div class="agregar">
+        <select [value]="nuevoDocumento()" (change)="onNuevoDocumento($event)">
+          <option value="">Elegí un documento</option>
+          @for (d of disponibles(); track d) {
+            <option [value]="d">{{ labels[d] }}</option>
+          }
+        </select>
+        <input type="date" [value]="nuevaFecha()" (change)="onNuevaFecha($event)" title="Fecha límite (opcional)" />
+        <button class="btn-agregar" (click)="agregar()" [disabled]="!nuevoDocumento()">Agregar</button>
+      </div>
+    } @else {
+      <p class="vacio">Ya tenés todos los documentos en tu checklist.</p>
+    }
   </section>
 }
