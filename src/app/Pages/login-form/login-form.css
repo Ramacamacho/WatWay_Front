@@ -1,6 +1,12 @@
+/* El componente ocupa todo el alto del <main> (entre header y footer) */
+:host {
+    display: block;
+    height: 100%;
+}
+
 /* Contenedor principal con degradado de cielo */
 .contenedor {
-    min-height: 100vh;
+    min-height: 100%;
     flex-direction: column;
     display: flex;
     justify-content: center;
@@ -128,7 +134,8 @@
 
 /* --- ESTRUCTURA DEL PASAPORTE --- */
 .pasaporte {
-    width: 350px;
+    width: 100%;
+    max-width: 350px;
     background-color: white;
     border-radius: 15px;
     overflow: hidden;
@@ -263,7 +270,7 @@
     transition: background-color 0.3s, transform 0.2s;
 }
 
-.pasaporte button:hover {
+.pasaporte button:hover:not(:disabled) {
     background-color: #1c457c;
     transform: translateY(-2px);
 }
@@ -289,4 +296,12 @@
 
 .registro a:hover {
     text-decoration: underline;
+}
+
+/* Si el usuario pidió "reducir movimiento" en su sistema, se frenan las animaciones */
+@media (prefers-reduced-motion: reduce) {
+    .cloud,
+    .flying-plane {
+        animation: none;
+    }
 }

@@ -37,6 +37,13 @@
   color: var(--gold) ;
 }
 
+/* Logo en imagen: que entre en la barra (86px de alto) */
+.logo img {
+  display: block;
+  height: 52px;
+  width: auto;
+}
+
 .link:hover {
   color: var(--gold);
 }
