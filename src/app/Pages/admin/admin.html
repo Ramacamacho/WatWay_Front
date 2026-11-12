@@ -1,0 +1,71 @@
+<section class="admin">
+  <h1>Panel de administración</h1>
+  <p class="subtitulo">Usuarios registrados en WatWay</p>
+
+  @if (error()) {
+    <p class="mensaje error">{{ error() }}</p>
+  }
+  @if (exito()) {
+    <p class="mensaje exito">{{ exito() }}</p>
+  }
+
+  @if (cargando()) {
+    <p>Cargando usuarios...</p>
+  } @else if (usuarios().length === 0 && !error()) {
+    <p>No hay usuarios registrados.</p>
+  } @else if (usuarios().length > 0) {
+    <div class="tabla-contenedor">
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Destino</th>
+            <th>Rol</th>
+            <th>Estado</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (u of usuarios(); track u.usuarioId) {
+            <tr [class.inactivo]="!u.activo">
+              <td>{{ u.nombre }} {{ u.apellido }}</td>
+              <td>{{ u.email }}</td>
+              <td>{{ u.ciudadDestino }}</td>
+              <td>
+                @for (rol of u.roles; track rol) {
+                  <span class="chip" [class.chip-admin]="rol === 'ADMIN'">{{ rol }}</span>
+                } @empty {
+                  <span class="chip">SIN ROL</span>
+                }
+              </td>
+              <td>{{ u.activo ? 'Activo' : 'Desactivado' }}</td>
+              <td class="acciones">
+                @if (esYo(u)) {
+                  <span class="nota">Sos vos</span>
+                } @else if (!u.activo) {
+                  <span class="nota">—</span>
+                } @else if (confirmandoId() === u.usuarioId) {
+                  <span class="nota">¿Seguro?</span>
+                  <button class="btn btn-peligro"
+                          (click)="desactivar(u)"
+                          [disabled]="procesandoId() === u.usuarioId">Sí</button>
+                  <button class="btn" (click)="cancelar()">No</button>
+                } @else {
+                  @if (!esAdmin(u) && u.credentialId !== null) {
+                    <button class="btn"
+                            (click)="hacerAdmin(u)"
+                            [disabled]="procesandoId() === u.usuarioId">Hacer admin</button>
+                  }
+                  <button class="btn btn-peligro"
+                          (click)="pedirConfirmacion(u)"
+                          [disabled]="procesandoId() === u.usuarioId">Desactivar</button>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</section>

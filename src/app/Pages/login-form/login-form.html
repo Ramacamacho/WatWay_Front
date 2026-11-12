@@ -34,7 +34,11 @@
             }
             </div>
 
-            <button type="submit"> Iniciar sesión </button>
+            @if (error()) {
+                <p class="error-login">{{ error() }}</p>
+            }
+
+            <button type="submit" [disabled]="cargando()"> Iniciar sesión </button>
 
             <p class="registro"> ¿Todavía no tenés cuenta?</p>
                 <a routerLink="/crearcuenta">Registrate</a>

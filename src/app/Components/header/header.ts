@@ -16,6 +16,10 @@ export class Header {
     return this.auth.estaLogueado();
   }
 
+  esAdmin() {
+    return this.auth.esAdmin();
+  }
+
   cerrarSesion() {
     this.auth.logout().subscribe({
       next: () => this.router.navigate(['/login']),

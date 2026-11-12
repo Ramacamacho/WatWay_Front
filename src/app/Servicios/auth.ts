@@ -1,5 +1,5 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { inject, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
 import { tap } from 'rxjs';
 import { AuthResponse } from '../Models/auth-response';
 import { RegisterRequest } from '../Models/register-request';
@@ -9,9 +9,18 @@ export class Auth {
   private http = inject(HttpClient);
   private apiUrl = 'http://localhost:8080/auth';
 
-  // Estado de sesión reactivo: se inicializa con lo que haya guardado
-  private logueado = signal(!!localStorage.getItem('accessToken'));
-  readonly estaLogueado = this.logueado.asReadonly();
+  // Estado de sesión reactivo: guardamos el token en un signal
+  // y todo lo demás (logueado, roles, email) se calcula a partir de él.
+  private token = signal<string | null>(localStorage.getItem('accessToken'));
+
+  readonly estaLogueado = computed(() => !!this.token());
+
+  // El back mete los roles en el token (claim "roles"), ej: ["USER", "ADMIN"]
+  private datosToken = computed(() => this.leerToken(this.token()));
+  readonly roles = computed<string[]>(() => this.datosToken()?.roles ?? []);
+  readonly esAdmin = computed(() => this.roles().includes('ADMIN'));
+  // El "sub" del token es el email del usuario logueado
+  readonly email = computed<string | null>(() => this.datosToken()?.sub ?? null);
 
   // Alias para el código que venía de la rama match
   readonly isLoggedIn = this.estaLogueado;
@@ -58,12 +67,27 @@ export class Auth {
   limpiarSesion() {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
-    this.logueado.set(false);
+    this.token.set(null);
   }
 
   private guardarTokens(res: AuthResponse) {
     localStorage.setItem('accessToken', res.accessToken);
     localStorage.setItem('refreshToken', res.refreshToken);
-    this.logueado.set(true);
+    this.token.set(res.accessToken);
+  }
+
+  // Un JWT tiene 3 partes separadas por puntos: header.payload.firma
+  // El payload es JSON en base64url, así que se puede leer sin librerías.
+  // Ojo: esto solo sirve para mostrar u ocultar cosas en pantalla.
+  // La seguridad de verdad la hace el back, que sí verifica la firma.
+  private leerToken(token: string | null): { sub?: string; roles?: string[] } | null {
+    if (!token) return null;
+    try {
+      const payload = token.split('.')[1];
+      const base64 = payload.replace(/-/g, '+').replace(/_/g, '/');
+      return JSON.parse(atob(base64));
+    } catch {
+      return null;
+    }
   }
 }
