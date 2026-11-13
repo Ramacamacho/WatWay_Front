@@ -8,6 +8,7 @@ import { Match } from './Pages/match/match';
 import { authGuard } from './Servicios/auth-guard';
 import { Chat } from './Pages/chat/chat';
 import { Perfilpage } from './SecondPages/perfilpage/perfilpage';
+import { SistGastos } from './SecondPages/sist-gastos/sist-gastos';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -18,6 +19,7 @@ export const routes: Routes = [
   { path: 'match', component: Match, canActivate: [authGuard] },
   { path: 'chat/:usuarioId', component: Chat, canActivate: [authGuard] },
   {path: 'perfil',component:Perfilpage,canActivate : [authGuard]},
+  {path: 'Finanzas',component:SistGastos,canActivate : [authGuard]},
 
   // El comodín SIEMPRE va último: atrapa cualquier URL que no coincida con las de arriba
   { path: '**', redirectTo: '' },

@@ -1,0 +1,400 @@
+/* =========================
+   DASHBOARD GENERAL
+========================= */
+
+.dashboard {
+  min-height: 100vh;
+  padding: 40px 6%;
+  background: #f4f6fa;
+  font-family: 'Segoe UI', sans-serif;
+  color: #1e293b;
+  box-sizing: border-box;
+}
+
+/* =========================
+   ENCABEZADO
+========================= */
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 35px;
+}
+
+.etiqueta {
+  color: #2563eb;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.dashboard-header h1 {
+  font-size: 34px;
+  margin: 10px 0;
+  color: #172554;
+}
+
+.dashboard-header p {
+  color: #64748b;
+  margin: 0;
+}
+
+.icono-header {
+  width: 65px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  background: #dbeafe;
+  font-size: 30px;
+}
+
+/* =========================
+   TARJETAS DE RESUMEN
+========================= */
+
+.resumen {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 22px;
+  margin-bottom: 28px;
+}
+
+.tarjeta {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  border: 1px solid #e8edf4;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+  transition: 0.25s;
+}
+
+.tarjeta:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+}
+
+.tarjeta-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.tarjeta h2 {
+  font-size: 29px;
+  margin: 22px 0 10px;
+  color: #172554;
+  overflow-wrap: anywhere;
+}
+
+.tarjeta small {
+  color: #94a3b8;
+}
+
+.tarjeta .icono {
+  font-size: 23px;
+  background: #f1f5f9;
+  padding: 10px;
+  border-radius: 12px;
+}
+
+.tarjeta.balance {
+  border-left: 5px solid #2563eb;
+}
+
+.tarjeta.ingreso {
+  border-left: 5px solid #16a34a;
+}
+
+.tarjeta.gasto {
+  border-left: 5px solid #ef4444;
+}
+
+/* =========================
+   GRÁFICOS
+========================= */
+
+.graficos {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 22px;
+  margin-bottom: 28px;
+}
+
+.grafico {
+  background: white;
+  padding: 28px;
+  border-radius: 16px;
+  border: 1px solid #e8edf4;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+  min-width: 0;
+}
+
+.grafico h2 {
+  color: #172554;
+  font-size: 19px;
+  margin: 0 0 8px;
+}
+
+.descripcion {
+  color: #94a3b8;
+  font-size: 13px;
+  margin-bottom: 30px;
+}
+
+.comparacion {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+  margin-top: 35px;
+}
+
+.dato-grafico {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.dato-titulo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+}
+
+.dato-titulo span {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.dato-titulo strong {
+  color: #172554;
+  font-size: 14px;
+}
+
+.texto-verde {
+  color: #16a34a !important;
+}
+
+.texto-rojo {
+  color: #ef4444 !important;
+}
+
+.barra-fondo {
+  height: 12px;
+  width: 100%;
+  background: #edf1f6;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.barra {
+  height: 100%;
+  border-radius: 20px;
+  transition: width 0.5s ease;
+}
+
+.barra.verde {
+  background: #16a34a;
+}
+
+.barra.rojo {
+  background: #ef4444;
+}
+
+.barra.azul {
+  background: #2563eb;
+}
+
+.categoria-grafico {
+  margin-bottom: 23px;
+}
+
+.sin-datos {
+  text-align: center;
+  color: #94a3b8;
+  padding: 35px 0;
+}
+
+/* =========================
+   FORMULARIO
+========================= */
+
+.formulario {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  border: 1px solid #e8edf4;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+  margin-bottom: 28px;
+}
+
+.seccion-titulo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.seccion-titulo h2 {
+  color: #172554;
+  margin: 0 0 8px;
+  font-size: 21px;
+}
+
+.seccion-titulo p {
+  color: #94a3b8;
+  font-size: 13px;
+  margin: 0;
+}
+
+.icono-formulario {
+  background: #dbeafe;
+  color: #2563eb;
+  padding: 12px 16px;
+  border-radius: 12px;
+  font-size: 20px;
+}
+
+.formulario form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.campo label {
+  color: #334155;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.campo input,
+.campo select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 13px;
+  border: 1px solid #dbe2ea;
+  border-radius: 9px;
+  background: #fff;
+  font-size: 14px;
+  color: #334155;
+  outline: none;
+  transition: 0.2s;
+}
+
+.campo input:focus,
+.campo select:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.10);
+}
+
+.btn-registrar {
+  grid-column: 1 / -1;
+  padding: 15px;
+  background: #172554;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-registrar:hover {
+  background: #2563eb;
+  transform: translateY(-2px);
+}
+
+/* =========================
+   HISTORIAL
+========================= */
+
+.historial {
+  background: white;
+  padding: 30px;
+  border-radius: 16px;
+  border: 1px solid #e8edf4;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+}
+
+.movimiento {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 18px 0;
+  border-bottom: 1px solid #edf1f6;
+}
+
+.movimiento:last-child {
+  border-bottom: none;
+}
+
+.movimiento-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 0;
+}
+
+.movimiento-icono {
+  width: 45px;
+  height: 45px;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f1f5f9;
+  border-radius: 12px;
+  font-size: 20px;
+}
+
+.movimiento h3 {
+  font-size: 15px;
+  color: #172554;
+  margin: 0 0 5px;
+}
+
+.movimiento p {
+  color: #94a3b8;
+  font-size: 12px;
+  margin: 0;
+}
+
+.movimiento strong {
+  white-space: nowrap;
+}
+
+.positivo {
+  color: #16a34a;
+}
+
+.negativo {
+  color: #ef4444;
+}
+
+.estado {
+  color: #94a3b8;
+  text-align: center;
+  padding: 25px;
+}
+
+.error {
+  color: #dc2626;
+  background: #fee2e2;
+  padding: 12px;
+  border-radius: 8px;
+}
+    

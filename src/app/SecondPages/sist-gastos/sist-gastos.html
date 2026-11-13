@@ -1,1 +1,231 @@
-<p>sist-gastos works!</p>
+<section class="dashboard">
+
+  
+  <header class="dashboard-header">
+    <div>
+      <span class="etiqueta">WATWAY FINANCE</span>
+      <h1>Mi economía</h1>
+      <p>Controlá tus ingresos y gastos durante tu Work & Travel.</p>
+    </div>
+
+    <div class="icono-header">💰</div>
+  </header>
+
+
+  <div class="resumen">
+
+    <div class="tarjeta balance">
+      <div class="tarjeta-top">
+        <span>Balance disponible</span>
+        <span class="icono">💳</span>
+      </div>
+      <h2>{{ balance | currency:'USD' }}</h2>
+      <small>Ingresos menos gastos</small>
+    </div>
+
+    <div class="tarjeta ingreso">
+      <div class="tarjeta-top">
+        <span>Ingresos totales</span>
+        <span class="icono">📈</span>
+      </div>
+      <h2>{{ ingresos | currency:'USD' }}</h2>
+      <small>Dinero recibido</small>
+    </div>
+
+    <div class="tarjeta gasto">
+      <div class="tarjeta-top">
+        <span>Gastos totales</span>
+        <span class="icono">📉</span>
+      </div>
+      <h2>{{ gastos | currency:'USD' }}</h2>
+      <small>Dinero utilizado</small>
+    </div>
+
+  </div>
+
+  <!-- GRÁFICOS -->
+  <div class="graficos">
+
+    <div class="grafico">
+      <h2>Ingresos vs. gastos</h2>
+      <p class="descripcion">Comparación de tu actividad financiera</p>
+
+      <div class="comparacion">
+
+        <div class="dato-grafico">
+          <div class="dato-titulo">
+            <span>Ingresos</span>
+            <strong class="texto-verde">
+              {{ ingresos | currency:'USD' }}
+            </strong>
+          </div>
+
+          <div class="barra-fondo">
+            <div class="barra verde"
+                 [style.width.%]="porcentajeIngresos">
+            </div>
+          </div>
+        </div>
+
+        <div class="dato-grafico">
+          <div class="dato-titulo">
+            <span>Gastos</span>
+            <strong class="texto-rojo">
+              {{ gastos | currency:'USD' }}
+            </strong>
+          </div>
+
+          <div class="barra-fondo">
+            <div class="barra rojo"
+                 [style.width.%]="porcentajeGastos">
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="grafico">
+      <h2>Gastos por categoría</h2>
+      <p class="descripcion">Distribución de tus gastos registrados</p>
+
+      @if (gastosPorCategoria.length === 0) {
+        <p class="sin-datos">Todavía no hay gastos para mostrar.</p>
+      } @else {
+
+        @for (categoria of gastosPorCategoria; track categoria.categoria) {
+
+          <div class="categoria-grafico">
+
+            <div class="dato-titulo">
+              <span>{{ categoria.categoria }}</span>
+              <strong>{{ categoria.monto | currency:'USD' }}</strong>
+            </div>
+
+            <div class="barra-fondo">
+              <div class="barra azul"
+                   [style.width.%]="categoria.porcentaje">
+              </div>
+            </div>
+
+          </div>
+
+        }
+
+      }
+    </div>
+
+  </div>
+
+  
+  <div class="formulario">
+
+    <div class="seccion-titulo">
+      <div>
+        <h2>Registrar movimiento</h2>
+        <p>Agregá un nuevo ingreso o gasto a tu economía.</p>
+      </div>
+    </div>
+
+    <form [formGroup]="formulario" (ngSubmit)="registrar()">
+
+      <div class="campo">
+        <label>Tipo de movimiento</label>
+        <select formControlName="type">
+          <option value="INGRESO">Ingreso</option>
+          <option value="GASTO">Gasto</option>
+        </select>
+      </div>
+
+      <div class="campo">
+        <label>Descripción</label>
+        <input type="text"   formControlName="description" placeholder="Descripcion del movimiento">
+      </div>
+
+      <div class="campo">
+        <label>Monto (USD)</label>
+        <input type="number"
+               formControlName="cost"
+               placeholder="Ej: 500">
+      </div>
+
+      <div class="campo">
+        <label>Fecha</label>
+        <input type="date" formControlName="date">
+      </div>
+
+      <div class="campo">
+        <label>Categoría</label>
+        <select formControlName="category">
+          <option value="COMIDA">Comida</option>
+          <option value="TRANSPORTE">Transporte</option>
+          <option value="CASA">Alojamiento</option>
+          <option value="OTROS">Otros</option>
+          <option value="SALARIO">Salario</option>
+          <option value="PROPINAS">Propinas</option>
+        </select>
+      </div>
+
+      
+
+      <button type="submit" class="btn-registrar">
+        + Registrar movimiento
+      </button>
+
+    </form>
+
+  </div>
+
+  <!-- HISTORIAL -->
+  <div class="historial">
+
+    <div class="seccion-titulo">
+      <div>
+        <h2>Historial de movimientos</h2>
+        <p>Consultá todos tus ingresos y gastos.</p>
+      </div>
+    </div>
+
+    @if (cargando) {
+      <p class="estado">Cargando movimientos...</p>
+    } @else if (movimientos.length === 0) {
+      <p class="estado">Todavía no tenés movimientos registrados.</p>
+    } @else {
+
+      @for (movimiento of movimientos; track movimiento.id) {
+
+        <div class="movimiento">
+
+          <div class="movimiento-info">
+            <div class="movimiento-icono">
+              {{ movimiento.type === 'INGRESO' ? '💵' : '🛒' }}
+            </div>
+
+            <div>
+              <h3>{{ movimiento.description }}</h3>
+              <p>{{ movimiento.date }} · {{ movimiento.category }}</p>
+            </div>
+          </div>
+
+          <strong
+            [class.positivo]="movimiento.type === 'INGRESO'"
+            [class.negativo]="movimiento.type === 'GASTO'">
+
+            {{ movimiento.type === 'INGRESO' ? '+' : '-' }}
+            {{ movimiento.cost | currency:'USD' }}
+
+          </strong>
+
+        </div>
+
+      }
+
+    }
+
+    @if (error) {
+      <p class="error">{{ error }}</p>
+    }
+
+  </div>
+
+</section>
