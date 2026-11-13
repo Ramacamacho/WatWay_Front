@@ -5,9 +5,8 @@
     @if (estaLogueado()) {
       <p class="link" routerLink="/checklist">Checklist</p>
       <p class="link" routerLink="/match">Match</p>
-      <p class="link" routerLink="/Finanzas">Mis Finanzas</p>
+      <p class="link" routerLink="/finanzas">Mis finanzas</p>
       <p class="btn btn-gold" (click)="cerrarSesion()">Cerrar sesión</p>
-      <p class="link" routerLink="/perfil">Mi Perfil</p>
     } @else {
        <p class="link" routerLink="/sobrenosotros">Sobre nosotros</p>
       <p class="btn btn-gold" routerLink="/login">Iniciar sesión</p>

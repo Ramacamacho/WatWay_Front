@@ -398,3 +398,94 @@
   border-radius: 8px;
 }
     
+
+/* =========================
+   EDITAR / ELIMINAR
+========================= */
+
+.campo input.ng-invalid.ng-touched,
+.campo select.ng-invalid.ng-touched {
+  border-color: #ef4444;
+}
+
+.botones-form {
+  grid-column: 1 / -1;
+  display: flex;
+  gap: 12px;
+}
+
+.botones-form .btn-registrar {
+  flex: 1;
+}
+
+.btn-registrar:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.btn-cancelar {
+  padding: 15px 22px;
+  background: white;
+  color: #172554;
+  border: 1px solid #dbe2ea;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-cancelar:hover {
+  border-color: #172554;
+}
+
+.movimiento-derecha {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.movimiento-acciones {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-mini {
+  padding: 5px 10px;
+  background: white;
+  color: #334155;
+  border: 1px solid #dbe2ea;
+  border-radius: 7px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-mini:hover {
+  border-color: #2563eb;
+  color: #2563eb;
+}
+
+.btn-mini.peligro {
+  color: #dc2626;
+}
+
+.btn-mini.peligro:hover {
+  background: #dc2626;
+  border-color: #dc2626;
+  color: white;
+}
+
+.confirmar {
+  color: #64748b;
+  font-size: 12px;
+}
+
+.exito {
+  color: #15803d;
+  background: #dcfce7;
+  padding: 12px;
+  border-radius: 8px;
+}

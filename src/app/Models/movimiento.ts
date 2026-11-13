@@ -1,8 +1,11 @@
+export type TipoMovimiento = 'INGRESO' | 'GASTO';
+
+// Mismos campos que MovimientoDTO del back
 export interface Movimiento {
-     id? :string,
-    description:string,
-    cost:number,
-    date:string,
-    category:string,
-    type: 'INGRESO'|'GASTO',
+  id?: number;
+  description: string;
+  cost: number;
+  date: string; // "2026-11-12"
+  category: string;
+  type: TipoMovimiento;
 }

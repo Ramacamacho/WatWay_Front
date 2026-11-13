@@ -1,25 +1,31 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, Service } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Movimiento } from '../Models/movimiento';
-import { Observable } from 'rxjs';
+
+// CRUD de movimientos (gastos e ingresos) -> /api/expenses
+// El token lo agrega solo el authInterceptor
 @Injectable({ providedIn: 'root' })
-
 export class MovimientoService {
-    private apiUrl = 'http://localhost:8080/api/expenses';
+  private http = inject(HttpClient);
+  private apiUrl = 'http://localhost:8080/api/expenses';
 
-constructor(private http:HttpClient){}
-  registrar(movimiento: Movimiento): Observable<Movimiento> {
-    return this.http.post<Movimiento>(  this.apiUrl, movimiento);
-  }
-
-  listar(): Observable<Movimiento[]> {
+  // GET /api/expenses
+  listar() {
     return this.http.get<Movimiento[]>(this.apiUrl);
   }
 
-  eliminar(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  // POST /api/expenses
+  registrar(movimiento: Movimiento) {
+    return this.http.post<Movimiento>(this.apiUrl, movimiento);
   }
-  actualizar(id: number, movimiento: Movimiento): Observable<Movimiento> {
-return this.http.put<Movimiento>(`${this.apiUrl}/${id}`, movimiento );
+
+  // PUT /api/expenses/{id}
+  actualizar(id: number, movimiento: Movimiento) {
+    return this.http.put<Movimiento>(`${this.apiUrl}/${id}`, movimiento);
+  }
+
+  // DELETE /api/expenses/{id}
+  eliminar(id: number) {
+    return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
 }

@@ -19,7 +19,7 @@
         <span>Balance disponible</span>
         <span class="icono">💳</span>
       </div>
-      <h2>{{ balance | currency:'USD' }}</h2>
+      <h2>{{ balance() | currency:'USD' }}</h2>
       <small>Ingresos menos gastos</small>
     </div>
 
@@ -28,7 +28,7 @@
         <span>Ingresos totales</span>
         <span class="icono">📈</span>
       </div>
-      <h2>{{ ingresos | currency:'USD' }}</h2>
+      <h2>{{ ingresos() | currency:'USD' }}</h2>
       <small>Dinero recibido</small>
     </div>
 
@@ -37,7 +37,7 @@
         <span>Gastos totales</span>
         <span class="icono">📉</span>
       </div>
-      <h2>{{ gastos | currency:'USD' }}</h2>
+      <h2>{{ gastos() | currency:'USD' }}</h2>
       <small>Dinero utilizado</small>
     </div>
 
@@ -56,13 +56,13 @@
           <div class="dato-titulo">
             <span>Ingresos</span>
             <strong class="texto-verde">
-              {{ ingresos | currency:'USD' }}
+              {{ ingresos() | currency:'USD' }}
             </strong>
           </div>
 
           <div class="barra-fondo">
             <div class="barra verde"
-                 [style.width.%]="porcentajeIngresos">
+                 [style.width.%]="porcentajeIngresos()">
             </div>
           </div>
         </div>
@@ -71,13 +71,13 @@
           <div class="dato-titulo">
             <span>Gastos</span>
             <strong class="texto-rojo">
-              {{ gastos | currency:'USD' }}
+              {{ gastos() | currency:'USD' }}
             </strong>
           </div>
 
           <div class="barra-fondo">
             <div class="barra rojo"
-                 [style.width.%]="porcentajeGastos">
+                 [style.width.%]="porcentajeGastos()">
             </div>
           </div>
         </div>
@@ -89,11 +89,11 @@
       <h2>Gastos por categoría</h2>
       <p class="descripcion">Distribución de tus gastos registrados</p>
 
-      @if (gastosPorCategoria.length === 0) {
+      @if (gastosPorCategoria().length === 0) {
         <p class="sin-datos">Todavía no hay gastos para mostrar.</p>
       } @else {
 
-        @for (categoria of gastosPorCategoria; track categoria.categoria) {
+        @for (categoria of gastosPorCategoria(); track categoria.categoria) {
 
           <div class="categoria-grafico">
 
@@ -122,16 +122,23 @@
 
     <div class="seccion-titulo">
       <div>
-        <h2>Registrar movimiento</h2>
+        <h2>{{ editandoId() === null ? 'Registrar movimiento' : 'Editar movimiento' }}</h2>
         <p>Agregá un nuevo ingreso o gasto a tu economía.</p>
       </div>
     </div>
+
+    @if (mensaje()) {
+      <p class="exito">{{ mensaje() }}</p>
+    }
+    @if (error()) {
+      <p class="error">{{ error() }}</p>
+    }
 
     <form [formGroup]="formulario" (ngSubmit)="registrar()">
 
       <div class="campo">
         <label>Tipo de movimiento</label>
-        <select formControlName="type">
+        <select formControlName="type" (change)="cambiarTipo()">
           <option value="INGRESO">Ingreso</option>
           <option value="GASTO">Gasto</option>
         </select>
@@ -157,20 +164,22 @@
       <div class="campo">
         <label>Categoría</label>
         <select formControlName="category">
-          <option value="COMIDA">Comida</option>
-          <option value="TRANSPORTE">Transporte</option>
-          <option value="CASA">Alojamiento</option>
-          <option value="OTROS">Otros</option>
-          <option value="SALARIO">Salario</option>
-          <option value="PROPINAS">Propinas</option>
+          @for (c of categorias(); track c.valor) {
+            <option [value]="c.valor">{{ c.texto }}</option>
+          }
         </select>
       </div>
 
       
 
-      <button type="submit" class="btn-registrar">
-        + Registrar movimiento
-      </button>
+      <div class="botones-form">
+        <button type="submit" class="btn-registrar" [disabled]="guardando()">
+          {{ editandoId() === null ? '+ Registrar movimiento' : 'Guardar cambios' }}
+        </button>
+        @if (editandoId() !== null) {
+          <button type="button" class="btn-cancelar" (click)="cancelarEdicion()">Cancelar</button>
+        }
+      </div>
 
     </form>
 
@@ -186,13 +195,13 @@
       </div>
     </div>
 
-    @if (cargando) {
+    @if (cargando()) {
       <p class="estado">Cargando movimientos...</p>
-    } @else if (movimientos.length === 0) {
+    } @else if (movimientos().length === 0) {
       <p class="estado">Todavía no tenés movimientos registrados.</p>
     } @else {
 
-      @for (movimiento of movimientos; track movimiento.id) {
+      @for (movimiento of movimientos(); track movimiento.id) {
 
         <div class="movimiento">
 
@@ -203,27 +212,36 @@
 
             <div>
               <h3>{{ movimiento.description }}</h3>
-              <p>{{ movimiento.date }} · {{ movimiento.category }}</p>
+              <p>{{ fecha(movimiento.date) }} · {{ textoCategoria(movimiento.category) }}</p>
             </div>
           </div>
 
-          <strong
-            [class.positivo]="movimiento.type === 'INGRESO'"
-            [class.negativo]="movimiento.type === 'GASTO'">
+          <div class="movimiento-derecha">
+            <strong
+              [class.positivo]="movimiento.type === 'INGRESO'"
+              [class.negativo]="movimiento.type === 'GASTO'">
 
-            {{ movimiento.type === 'INGRESO' ? '+' : '-' }}
-            {{ movimiento.cost | currency:'USD' }}
+              {{ movimiento.type === 'INGRESO' ? '+' : '-' }}
+              {{ movimiento.cost | currency:'USD' }}
 
-          </strong>
+            </strong>
+
+            <div class="movimiento-acciones">
+              @if (confirmandoId() === movimiento.id) {
+                <span class="confirmar">¿Eliminar?</span>
+                <button class="btn-mini peligro" (click)="eliminar(movimiento)">Sí</button>
+                <button class="btn-mini" (click)="cancelarEliminar()">No</button>
+              } @else {
+                <button class="btn-mini" (click)="editar(movimiento)">Editar</button>
+                <button class="btn-mini peligro" (click)="pedirConfirmacion(movimiento.id)">Eliminar</button>
+              }
+            </div>
+          </div>
 
         </div>
 
       }
 
-    }
-
-    @if (error) {
-      <p class="error">{{ error }}</p>
     }
 
   </div>
