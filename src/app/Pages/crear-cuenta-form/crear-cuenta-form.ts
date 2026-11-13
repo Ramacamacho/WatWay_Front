@@ -1,5 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { SOLO_LETRAS } from '../../Servicios/validadores';
 import { Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { Auth } from '../../Servicios/auth';
@@ -36,12 +37,12 @@ export class CrearCuentaForm {
   cargando = signal(false);
 
   form = this.fb.nonNullable.group({
-    nombre: ['', [Validators.required, Validators.minLength(2)]],
-    apellido: ['', Validators.required],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
-    posicionLaboral: ['', Validators.required],
-    ciudadDestino: ['', Validators.required],
+    nombre: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(60), Validators.pattern(SOLO_LETRAS)]],
+    apellido: ['', [Validators.required, Validators.maxLength(60), Validators.pattern(SOLO_LETRAS)]],
+    email: ['', [Validators.required, Validators.email, Validators.maxLength(100)]],
+    password: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(72)]],
+    posicionLaboral: ['', [Validators.required, Validators.maxLength(100)]],
+    ciudadDestino: ['', [Validators.required, Validators.maxLength(100)]],
     sexo: ['', Validators.required],
     descripcion: ['', Validators.maxLength(500)],
   });
@@ -94,7 +95,7 @@ export class CrearCuentaForm {
           this.paso.set(0);
           this.error.set('Ese email ya está registrado');
         } else {
-          this.error.set(err.error?.message || 'No se pudo crear el usuario');
+          this.error.set(err.error?.error || err.error?.message || 'No se pudo crear el usuario');
         }
         this.cargando.set(false);
       },

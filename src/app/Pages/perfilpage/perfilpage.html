@@ -50,7 +50,7 @@
 
             <label for="nueva">Nueva contraseña</label>
             <input id="nueva" type="password" formControlName="nueva" autocomplete="new-password" />
-            @if (invalidoPass('nueva')) { <small>Mínimo 6 caracteres</small> }
+            @if (invalidoPass('nueva')) { <small>Entre 6 y 72 caracteres</small> }
 
             <label for="repetir">Repetir nueva contraseña</label>
             <input id="repetir" type="password" formControlName="repetir" autocomplete="new-password" />
@@ -68,11 +68,11 @@
         <form [formGroup]="form" (ngSubmit)="guardar()" class="formulario">
           <label for="nombre">Nombre</label>
           <input id="nombre" formControlName="nombre" />
-          @if (invalido('nombre')) { <small>El nombre es obligatorio</small> }
+          @if (invalido('nombre')) { <small>Obligatorio. Solo letras, espacios, ' o -</small> }
 
           <label for="apellido">Apellido</label>
           <input id="apellido" formControlName="apellido" />
-          @if (invalido('apellido')) { <small>El apellido es obligatorio</small> }
+          @if (invalido('apellido')) { <small>Obligatorio. Solo letras, espacios, ' o -</small> }
 
           <label for="sexo">Sexo</label>
           <select id="sexo" formControlName="sexo">

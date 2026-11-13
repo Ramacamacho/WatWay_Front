@@ -1,6 +1,7 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
+import { SOLO_LETRAS } from '../../Servicios/validadores';
 import { HttpErrorResponse } from '@angular/common/http';
 import { PerfilService } from '../../Servicios/perfil-service';
 import { Auth } from '../../Servicios/auth';
@@ -48,8 +49,8 @@ export class Perfilpage implements OnInit {
   opcionesSexo = Object.keys(this.etiquetaSexo);
 
   form = this.fb.nonNullable.group({
-    nombre: ['', [Validators.required, Validators.maxLength(60)]],
-    apellido: ['', [Validators.required, Validators.maxLength(60)]],
+    nombre: ['', [Validators.required, Validators.maxLength(60), Validators.pattern(SOLO_LETRAS)]],
+    apellido: ['', [Validators.required, Validators.maxLength(60), Validators.pattern(SOLO_LETRAS)]],
     posicionLaboral: ['', [Validators.required, Validators.maxLength(100)]],
     ciudadDestino: ['', [Validators.required, Validators.maxLength(100)]],
     sexo: ['', Validators.required],
@@ -63,7 +64,7 @@ export class Perfilpage implements OnInit {
   passForm = this.fb.nonNullable.group(
     {
       actual: ['', Validators.required],
-      nueva: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(100)]],
+      nueva: ['', [Validators.required, Validators.minLength(6), Validators.maxLength(72)]],
       repetir: ['', Validators.required],
     },
     { validators: this.coincidenPasswords },
