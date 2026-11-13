@@ -16,48 +16,63 @@
 
     @if (candidato(); as c) {
       <article class="tarjeta">
-        <h2>{{ c.nombre }} {{ c.apellido }}</h2>
-        <p><strong>Sexo:</strong> {{ c.sexo }}</p>
-        <p><strong>Puesto:</strong> {{ c.posicionLaboral }}</p>
-        <p><strong>Destino:</strong> {{ c.ciudadDestino }}</p>
-        <p>{{ c.descripcion }}</p>
+        <header class="tarjeta-cabecera">
+          <span class="avatar">{{ c.nombre.charAt(0) }}</span>
+          <div class="identidad">
+            <h2>{{ c.nombre }} {{ c.apellido }}</h2>
+            <p class="subtitulo">{{ c.posicionLaboral }} · {{ c.ciudadDestino }}</p>
+          </div>
+          <span class="chip">{{ c.sexo.toLowerCase() }}</span>
+        </header>
 
-        <div class="botones">
-          <button class="no" (click)="dislike()" [disabled]="cargando()">✖ No</button>
-          <button class="si" (click)="like()" [disabled]="cargando()">♥ Like</button>
+        <div class="sobre-mi">
+          <span class="etiqueta">Sobre mí</span>
+          <p>{{ c.descripcion || 'Sin descripción' }}</p>
+        </div>
+
+        <div class="acciones">
+          <button class="btn btn-secundario" (click)="dislike()" [disabled]="cargando()">✖ No</button>
+          <button class="btn btn-principal" (click)="like()" [disabled]="cargando()">♥ Like</button>
         </div>
       </article>
     } @else if (sinCandidatos()) {
-      <p>No hay más candidatos por ahora. Volvé más tarde.</p>
+      <p class="estado">No hay más candidatos por ahora. Volvé más tarde.</p>
     } @else if (cargando()) {
-      <p>Buscando candidatos...</p>
+      <p class="estado">Buscando candidatos...</p>
     }
 
   } @else {
 
     @if (matches().length === 0) {
-      <p>Todavía no tenés matches.</p>
+      <p class="estado">Todavía no tenés matches.</p>
     }
 
     @for (m of matches(); track m.id) {
       <article class="tarjeta">
-        <h2>{{ m.nombre }} {{ m.apellido }}</h2>
-        <p><strong>Sexo:</strong> {{ m.sexo }}</p>
-        <p><strong>Puesto:</strong> {{ m.posicionLaboral }}</p>
-        <p><strong>Destino:</strong> {{ m.ciudadDestino }}</p>
-        <p><strong>Sobre mí:</strong> {{ m.descripcion || 'Sin descripción' }}</p>
+        <header class="tarjeta-cabecera">
+          <span class="avatar">{{ m.nombre.charAt(0) }}</span>
+          <div class="identidad">
+            <h2>{{ m.nombre }} {{ m.apellido }}</h2>
+            <p class="subtitulo">{{ m.posicionLaboral }} · {{ m.ciudadDestino }}</p>
+          </div>
+          <span class="chip">{{ m.sexo.toLowerCase() }}</span>
+        </header>
 
-        <div class="acciones-match">
-          <a class="btn-chat"
-             [routerLink]="['/chat', m.id]"
-             [state]="{ nombre: m.nombre + ' ' + m.apellido }">💬 Chatear</a>
+        <div class="sobre-mi">
+          <span class="etiqueta">Sobre mí</span>
+          <p>{{ m.descripcion || 'Sin descripción' }}</p>
+        </div>
 
+        <div class="acciones">
           @if (confirmandoId() === m.id) {
             <span class="confirmar">¿Eliminar match?</span>
-            <button class="btn-eliminar" (click)="eliminarMatch(m)" [disabled]="eliminando()">Sí</button>
-            <button class="btn-cancelar" (click)="cancelarEliminar()" [disabled]="eliminando()">No</button>
+            <button class="btn btn-peligro" (click)="eliminarMatch(m)" [disabled]="eliminando()">Sí</button>
+            <button class="btn btn-secundario" (click)="cancelarEliminar()" [disabled]="eliminando()">No</button>
           } @else {
-            <button class="btn-eliminar" (click)="pedirConfirmacion(m.id)">Eliminar match</button>
+            <a class="btn btn-principal"
+               [routerLink]="['/chat', m.id]"
+               [state]="{ nombre: m.nombre + ' ' + m.apellido }">💬 Chatear</a>
+            <button class="btn btn-peligro" (click)="pedirConfirmacion(m.id)">Eliminar</button>
           }
         </div>
       </article>
