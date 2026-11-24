@@ -34,6 +34,9 @@ export class Chat implements OnInit, OnDestroy {
   borrandoId = signal<number | null>(null);
 
   private intervalo?: ReturnType<typeof setInterval>;
+  // Mientras se muestra un aviso, el polling no lo borra
+  private avisoActivo = false;
+  private timerAviso?: ReturnType<typeof setTimeout>;
 
   ngOnInit() {
     // Nombre que manda la página de matches al tocar "Chatear"
@@ -50,6 +53,7 @@ export class Chat implements OnInit, OnDestroy {
   ngOnDestroy() {
     // Al salir de la página deja de consultar al back
     clearInterval(this.intervalo);
+    clearTimeout(this.timerAviso);
   }
 
   cargarMensajes() {
@@ -57,8 +61,15 @@ export class Chat implements OnInit, OnDestroy {
       next: (lista) => {
         const hayNuevos = lista.length !== this.mensajes().length;
         this.mensajes.set(lista);
+        // Si mientras lo editaba el otro lo leyó, se cierra la edición
+        const editando = lista.find((x) => x.id === this.editandoId());
+        if (editando && !editando.puedeModificar) {
+          this.cancelarEdicion();
+          this.mostrarAviso('El mensaje ya fue leído: no se puede editar');
+        }
         this.cargando.set(false);
-        this.error.set('');
+        // No pisa un aviso de editar/borrar que todavía se está mostrando
+        if (!this.avisoActivo) this.error.set('');
         if (hayNuevos) this.bajarScroll();
       },
       error: (err: HttpErrorResponse) => {
@@ -95,9 +106,10 @@ export class Chat implements OnInit, OnDestroy {
 
   // ---------- Editar ----------
   empezarEdicion(m: Mensaje) {
+    if (!m.puedeModificar) return;
     this.borrandoId.set(null);
     this.editandoId.set(m.id);
-    this.textoEdicion = m.contenido;
+    this.textoEdicion = m.contenido ?? '';
   }
 
   cancelarEdicion() {
@@ -113,7 +125,11 @@ export class Chat implements OnInit, OnDestroy {
         this.mensajes.update((lista) => lista.map((x) => (x.id === editado.id ? editado : x)));
         this.cancelarEdicion();
       },
-      error: () => this.error.set('No se pudo editar el mensaje'),
+      error: (err: HttpErrorResponse) => {
+        this.cancelarEdicion();
+        this.mostrarAviso(this.mensajeError(err, 'No se pudo editar el mensaje'));
+        this.cargarMensajes();
+      },
     });
   }
 
@@ -129,13 +145,19 @@ export class Chat implements OnInit, OnDestroy {
 
   borrar(m: Mensaje) {
     this.chatService.eliminarMensaje(m.id).subscribe({
+      // No desaparece: queda como "Mensaje eliminado"
       next: () => {
-        this.mensajes.update((lista) => lista.filter((x) => x.id !== m.id));
+        this.mensajes.update((lista) =>
+          lista.map((x) =>
+            x.id === m.id ? { ...x, eliminado: true, contenido: null, puedeModificar: false } : x
+          )
+        );
         this.borrandoId.set(null);
       },
-      error: () => {
+      error: (err: HttpErrorResponse) => {
         this.borrandoId.set(null);
-        this.error.set('No se pudo borrar el mensaje');
+        this.mostrarAviso(this.mensajeError(err, 'No se pudo borrar el mensaje'));
+        this.cargarMensajes();
       },
     });
   }
@@ -152,6 +174,22 @@ export class Chat implements OnInit, OnDestroy {
       return m.emisorId === this.otroUsuarioId ? m.emisorNombre : m.receptorNombre;
     }
     return this.nombre();
+  }
+
+  // Muestra un aviso durante 4 segundos
+  private mostrarAviso(texto: string) {
+    this.error.set(texto);
+    this.avisoActivo = true;
+    clearTimeout(this.timerAviso);
+    this.timerAviso = setTimeout(() => {
+      this.avisoActivo = false;
+      this.error.set('');
+    }, 4000);
+  }
+
+  // El back manda { error: "..." } (por ejemplo "No podés editar un mensaje que ya fue leído")
+  private mensajeError(err: HttpErrorResponse, porDefecto: string): string {
+    return err.status === 403 && err.error?.error ? err.error.error : porDefecto;
   }
 
   private bajarScroll() {

@@ -2,6 +2,7 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { MatchService } from '../../Servicios/match-service';
+import { ChatService } from '../../Servicios/chat-service';
 import { UsuarioMatch } from '../../Models/usuario-match';
 
 @Component({
@@ -12,6 +13,7 @@ import { UsuarioMatch } from '../../Models/usuario-match';
 })
 export class Match implements OnInit {
   private matchService = inject(MatchService);
+  private chatService = inject(ChatService);
 
   vista = signal<'descubrir' | 'matches'>('descubrir');
   candidato = signal<UsuarioMatch | null>(null);
@@ -23,6 +25,8 @@ export class Match implements OnInit {
   // Id del match al que se le pide confirmación para eliminar
   confirmandoId = signal<number | null>(null);
   eliminando = signal(false);
+  // usuarioId -> cantidad de mensajes sin leer de ese match
+  noLeidos = signal<Record<number, number>>({});
 
   ngOnInit() {
     this.cargarCandidato();
@@ -87,6 +91,19 @@ export class Match implements OnInit {
     this.matchService.getMatches().subscribe({
       next: lista => this.matches.set(lista),
       error: () => this.error.set('No se pudieron cargar tus matches'),
+    });
+    this.cargarNoLeidos();
+  }
+
+  cargarNoLeidos() {
+    this.chatService.getNoLeidos().subscribe({
+      next: lista => {
+        const mapa: Record<number, number> = {};
+        lista.forEach(n => (mapa[n.usuarioId] = n.cantidad));
+        this.noLeidos.set(mapa);
+      },
+      // Si falla, la lista de matches se muestra igual, sin los números
+      error: () => this.noLeidos.set({}),
     });
   }
 

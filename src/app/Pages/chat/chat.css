@@ -211,3 +211,23 @@
   font: inherit;
   box-sizing: border-box;
 }
+/* ---------- Editado / leído / eliminado ---------- */
+.editado {
+  font-style: italic;
+}
+
+.check {
+  margin-left: 4px;
+  letter-spacing: -1px;
+}
+
+.check.leido {
+  color: var(--gold);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.burbuja p.eliminado {
+  font-style: italic;
+  opacity: 0.65;
+}

@@ -71,7 +71,12 @@
           } @else {
             <a class="btn btn-principal"
                [routerLink]="['/chat', m.id]"
-               [state]="{ nombre: m.nombre + ' ' + m.apellido }">💬 Chatear</a>
+               [state]="{ nombre: m.nombre + ' ' + m.apellido }">
+              💬 Chatear
+              @if (noLeidos()[m.id]; as cantidad) {
+                <span class="badge" [title]="cantidad + ' sin leer'">{{ cantidad }}</span>
+              }
+            </a>
             <button class="btn btn-peligro" (click)="pedirConfirmacion(m.id)">Eliminar</button>
           }
         </div>

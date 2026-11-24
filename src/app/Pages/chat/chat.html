@@ -23,11 +23,26 @@
               <button (click)="guardarEdicion(m)" [disabled]="!textoEdicion.trim()">Guardar</button>
               <button (click)="cancelarEdicion()">Cancelar</button>
             </div>
+          } @else if (m.eliminado) {
+            <p class="eliminado">🚫 Mensaje eliminado</p>
+            <span class="hora">{{ m.fechaEnvio | date: 'dd/MM HH:mm' }}</span>
           } @else {
             <p>{{ m.contenido }}</p>
-            <span class="hora">{{ m.fechaEnvio | date: 'dd/MM HH:mm' }}</span>
+            <span class="hora">
+              @if (m.editado) {
+                <span class="editado" [title]="'Editado ' + (m.fechaEdicion | date: 'dd/MM HH:mm')">editado ·</span>
+              }
+              {{ m.fechaEnvio | date: 'dd/MM HH:mm' }}
+              @if (esMio(m)) {
+                @if (m.leido) {
+                  <span class="check leido" [title]="'Leído ' + (m.fechaLectura | date: 'dd/MM HH:mm')">✓✓ Leído</span>
+                } @else {
+                  <span class="check" title="Enviado">✓</span>
+                }
+              }
+            </span>
 
-            @if (esMio(m)) {
+            @if (m.puedeModificar) {
               <div class="burbuja-acciones">
                 @if (borrandoId() === m.id) {
                   <span>¿Borrar?</span>
