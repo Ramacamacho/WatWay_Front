@@ -1,8 +1,10 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { AdminService } from '../../Servicios/admin-service';
 import { Auth } from '../../Servicios/auth';
 import { AdminUsuario } from '../../Models/admin-usuario';
+import { ForoService } from '../../Servicios/foro-service';
+import { EstadoForo } from '../../Models/foro';
 
 @Component({
   selector: 'app-admin',
@@ -13,6 +15,7 @@ import { AdminUsuario } from '../../Models/admin-usuario';
 export class Admin implements OnInit {
   private adminService = inject(AdminService);
   private auth = inject(Auth);
+  private foroService = inject(ForoService);
 
   usuarios = signal<AdminUsuario[]>([]);
   cargando = signal(true);
@@ -24,8 +27,37 @@ export class Admin implements OnInit {
   // Id de la fila que tiene una acción en curso (para deshabilitar sus botones)
   procesandoId = signal<number | null>(null);
 
+  // ---------- Estados con empleadores (pintan el mapa del foro) ----------
+  estados = signal<EstadoForo[]>([]);
+  cambiandoCodigo = signal<string | null>(null);
+  cantidadConEmpleadores = computed(() => this.estados().filter(e => e.tieneEmpleadores).length);
+
   ngOnInit() {
     this.cargar();
+    this.cargarEstados();
+  }
+
+  cargarEstados() {
+    this.foroService.getEstados().subscribe({
+      next: lista => this.estados.set(lista),
+      error: (err: HttpErrorResponse) =>
+        this.error.set(this.mensajeError(err, 'No se pudieron cargar los estados.')),
+    });
+  }
+
+  alternarEmpleadores(e: EstadoForo) {
+    this.limpiarMensajes();
+    this.cambiandoCodigo.set(e.codigo);
+    this.foroService.marcarEmpleadores(e.codigo, !e.tieneEmpleadores).subscribe({
+      next: actualizado => {
+        this.cambiandoCodigo.set(null);
+        this.estados.update(lista => lista.map(x => (x.codigo === actualizado.codigo ? actualizado : x)));
+      },
+      error: (err: HttpErrorResponse) => {
+        this.cambiandoCodigo.set(null);
+        this.error.set(this.mensajeError(err, 'No se pudo actualizar el estado.'));
+      },
+    });
   }
 
   cargar() {

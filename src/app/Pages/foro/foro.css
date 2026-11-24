@@ -1,0 +1,292 @@
+:host {
+  --navy: #14213d;
+  --gold: #b08d3c;
+  --gold-dark: #8a6d2b;
+  --cream: #f2e6d3;
+  --paper: #fffaf2;
+  --borde: #e3d6c0;
+  --texto: #3a4256;
+  --rojo: #a33a2c;
+
+  display: block;
+  background: var(--cream);
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+.foro {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+/* ---------- Pestañas ---------- */
+.tabs {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 1rem;
+  background: var(--navy);
+  border-radius: 10px;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--cream);
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.tabs button.activo {
+  background: var(--gold);
+  color: var(--navy);
+  font-weight: 600;
+}
+
+.ayuda {
+  margin: 0 0 6px;
+  color: var(--gold-dark);
+  font-size: 0.8rem;
+}
+
+/* ---------- Mapa ---------- */
+.mapa {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.estado {
+  stroke: #ffffff;
+  stroke-width: 1;
+  cursor: pointer;
+  outline: none;
+  transition: filter 0.15s;
+}
+
+.estado:hover,
+.estado:focus {
+  filter: brightness(1.18);
+}
+
+.estado.sel {
+  stroke: var(--navy);
+  stroke-width: 3.5;
+}
+
+.region {
+  fill: none;
+  stroke: #ffffff;
+  stroke-width: 5;
+  pointer-events: none;
+}
+
+.cartel {
+  pointer-events: none;
+}
+
+.cartel rect {
+  fill: var(--navy);
+}
+
+.cartel circle {
+  fill: var(--gold);
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.cartel text {
+  text-anchor: middle;
+  font-family: 'IBM Plex Mono', monospace;
+  font-weight: 600;
+}
+
+.cartel-nombre {
+  fill: var(--cream);
+  font-size: 14px;
+}
+
+.cartel-cantidad {
+  fill: var(--navy);
+  font-size: 12px;
+}
+
+/* ---------- Tarjetas ---------- */
+.tarjeta {
+  margin-top: 14px;
+  padding: 14px 16px;
+  background: var(--paper);
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+}
+
+.tarjeta-cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.identidad {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.muestra {
+  width: 16px;
+  height: 16px;
+  margin-top: 5px;
+  flex-shrink: 0;
+  border-radius: 4px;
+}
+
+h2 {
+  margin: 0;
+  color: var(--navy);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.1rem;
+}
+
+.meta {
+  margin: 2px 0 0;
+  color: var(--gold-dark);
+  font-size: 0.75rem;
+}
+
+.chip-empleadores,
+.chip-faq {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 20px;
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.chip-empleadores {
+  margin-top: 6px;
+  background: #e4f2fb;
+  border: 1px solid #a9d3ef;
+  color: #1a5f96;
+}
+
+.chip-faq {
+  background: #f6efe1;
+  border: 1px solid #e3d0a6;
+  color: var(--gold-dark);
+}
+
+/* ---------- Temas ---------- */
+.hilo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 4px;
+  border-top: 1px solid #eee2cc;
+  color: var(--texto);
+  text-decoration: none;
+}
+
+.hilo:hover {
+  background: #fbf4e8;
+}
+
+.hilo-titulo {
+  margin: 0;
+  color: var(--navy);
+  font-size: 0.9rem;
+}
+
+.flecha {
+  color: var(--gold-dark);
+  font-size: 1.3rem;
+}
+
+.vacio,
+.estado-carga {
+  margin: 10px 0 4px;
+  color: var(--gold-dark);
+  font-size: 0.85rem;
+}
+
+/* ---------- Formulario ---------- */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 6px 0 12px;
+}
+
+.formulario input,
+.formulario textarea {
+  padding: 9px 11px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--navy);
+  font: inherit;
+  font-size: 0.85rem;
+  resize: vertical;
+}
+
+.formulario input:focus,
+.formulario textarea:focus {
+  outline: 2px solid var(--gold);
+  border-color: transparent;
+}
+
+.formulario small {
+  color: var(--rojo);
+  font-size: 0.75rem;
+}
+
+.acciones {
+  display: flex;
+  gap: 8px;
+}
+
+/* ---------- Botones ---------- */
+.btn {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-principal {
+  border: 1px solid var(--navy);
+  background: var(--navy);
+  color: var(--cream);
+}
+
+.btn-principal:hover:not(:disabled) {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+}
+
+.btn-secundario {
+  border: 1px solid var(--borde);
+  background: #ffffff;
+  color: var(--navy);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #f3d6d1;
+  color: var(--rojo);
+}

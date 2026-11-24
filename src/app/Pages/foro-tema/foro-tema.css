@@ -1,0 +1,187 @@
+:host {
+  --navy: #14213d;
+  --gold: #b08d3c;
+  --gold-dark: #8a6d2b;
+  --cream: #f2e6d3;
+  --paper: #fffaf2;
+  --borde: #e3d6c0;
+  --texto: #3a4256;
+  --rojo: #a33a2c;
+
+  display: block;
+  background: var(--cream);
+  font-family: 'IBM Plex Mono', 'Courier New', monospace;
+}
+
+.foro-tema {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.volver {
+  display: inline-block;
+  margin-bottom: 12px;
+  color: var(--navy);
+  font-size: 0.85rem;
+  text-decoration: none;
+}
+
+.volver:hover {
+  color: var(--gold-dark);
+}
+
+.tarjeta {
+  margin-bottom: 12px;
+  padding: 14px 16px;
+  background: var(--paper);
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+}
+
+.lugar {
+  margin: 0 0 6px;
+  color: var(--gold-dark);
+  font-size: 0.75rem;
+}
+
+h1 {
+  margin: 0;
+  color: var(--navy);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1.35rem;
+}
+
+h2 {
+  margin: 18px 0 10px;
+  color: var(--navy);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 1rem;
+}
+
+.meta {
+  margin: 4px 0 0;
+  color: var(--gold-dark);
+  font-size: 0.75rem;
+}
+
+.contenido {
+  margin: 10px 0 0;
+  color: var(--texto);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  white-space: pre-line; /* respeta los saltos de línea que escribió el usuario */
+  overflow-wrap: anywhere;
+}
+
+.respuesta .contenido {
+  margin-top: 6px;
+}
+
+.chip-faq {
+  display: inline-block;
+  padding: 2px 9px;
+  border: 1px solid #e3d0a6;
+  border-radius: 20px;
+  background: #f6efe1;
+  color: var(--gold-dark);
+  font-size: 0.72rem;
+}
+
+.vacio {
+  color: var(--gold-dark);
+  font-size: 0.85rem;
+}
+
+/* ---------- Formularios ---------- */
+.formulario {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.formulario input,
+.formulario textarea {
+  padding: 9px 11px;
+  border: 1px solid var(--borde);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--navy);
+  font: inherit;
+  font-size: 0.85rem;
+  resize: vertical;
+}
+
+.formulario input:focus,
+.formulario textarea:focus {
+  outline: 2px solid var(--gold);
+  border-color: transparent;
+}
+
+.formulario small {
+  color: var(--rojo);
+  font-size: 0.75rem;
+}
+
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.confirmar {
+  color: var(--texto);
+  font-size: 0.8rem;
+}
+
+/* ---------- Botones ---------- */
+.btn {
+  padding: 7px 13px;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+}
+
+.btn-principal {
+  border: 1px solid var(--navy);
+  background: var(--navy);
+  color: var(--cream);
+}
+
+.btn-principal:hover:not(:disabled) {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--navy);
+}
+
+.btn-secundario {
+  border: 1px solid var(--borde);
+  background: #ffffff;
+  color: var(--navy);
+}
+
+.btn-peligro {
+  border: 1px solid #c9a9a3;
+  background: transparent;
+  color: var(--rojo);
+}
+
+.btn-peligro:hover {
+  background: var(--rojo);
+  border-color: var(--rojo);
+  color: #ffffff;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.error {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: #f3d6d1;
+  color: var(--rojo);
+}

@@ -1,0 +1,165 @@
+<section class="foro">
+  <div class="tabs">
+    <button [class.activo]="vista() === 'mapa'" (click)="verMapa()">Foros por estado</button>
+    <button [class.activo]="vista() === 'global'" (click)="verGlobal()">Foro global</button>
+  </div>
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  @if (vista() === 'mapa') {
+    <p class="ayuda">Pasá el mouse por un estado para ver su nombre y tocalo para entrar a su foro.</p>
+
+    @if (mapa(); as m) {
+      <svg class="mapa" [attr.viewBox]="m.viewBox" role="img" aria-label="Mapa de Estados Unidos">
+        <!-- Estados -->
+        @for (e of m.estados; track e.codigo) {
+          <path class="estado"
+                [attr.d]="e.d"
+                [attr.fill]="e.color"
+                [class.sel]="seleccionado() === e.codigo"
+                tabindex="0"
+                [attr.aria-label]="'Foro de ' + e.nombre"
+                (mouseenter)="hover.set(e)"
+                (mouseleave)="hover.set(null)"
+                (click)="elegir(e.codigo)"
+                (keydown.enter)="elegir(e.codigo)" />
+        }
+        <!-- Bordes de las regiones -->
+        @for (r of m.regiones; track r.nombre) {
+          <path class="region" [attr.d]="r.d" />
+        }
+        <!-- Cartel con el nombre y punto con la cantidad de temas: solo al pasar el mouse -->
+        @if (hover(); as h) {
+          <g class="cartel">
+            <rect [attr.x]="h.x - anchoCartel(h.nombre) / 2" [attr.y]="h.y - 44"
+                  [attr.width]="anchoCartel(h.nombre)" height="26" rx="6" />
+            <text class="cartel-nombre" [attr.x]="h.x" [attr.y]="h.y - 26">{{ h.nombre }}</text>
+            <circle [attr.cx]="h.x" [attr.cy]="h.y" r="12" />
+            <text class="cartel-cantidad" [attr.x]="h.x" [attr.y]="h.y + 4">{{ cantidadTemas(h.codigo) }}</text>
+          </g>
+        }
+      </svg>
+    } @else {
+      <p class="estado-carga">Cargando mapa...</p>
+    }
+
+    @if (estadoElegido(); as e) {
+      <article class="tarjeta">
+        <header class="tarjeta-cabecera">
+          <div class="identidad">
+            <span class="muestra" [style.background]="e.color"></span>
+            <div>
+              <h2>Foro de {{ e.nombre }}</h2>
+              <p class="meta">{{ e.region }} · {{ temas().length }} temas · color: {{ e.motivo }}</p>
+              @if (tieneEmpleadores(e.codigo)) {
+                <span class="chip-empleadores">💼 La agencia tiene empleadores acá</span>
+              }
+            </div>
+          </div>
+          @if (formAbierto() !== 'estado') {
+            <button class="btn btn-principal" (click)="abrirFormulario('estado')">+ Nuevo tema</button>
+          }
+        </header>
+
+        @if (formAbierto() === 'estado') {
+          <ng-container [ngTemplateOutlet]="formulario" />
+        }
+
+        @if (cargando()) {
+          <p class="vacio">Cargando temas...</p>
+        } @else {
+          @for (t of temas(); track t.id) {
+            <a class="hilo" [routerLink]="['/foro/tema', t.id]">
+              <div>
+                <p class="hilo-titulo">{{ t.titulo }}</p>
+                <p class="meta">{{ t.autorNombre }} · {{ t.fechaCreacion | date:'dd/MM/yyyy' }} · {{ t.cantidadRespuestas }} respuestas</p>
+              </div>
+              <span class="flecha">›</span>
+            </a>
+          } @empty {
+            <p class="vacio">Todavía no hay temas en {{ e.nombre }}. Creá el primero.</p>
+          }
+        }
+      </article>
+    }
+  } @else {
+    <!-- ===== FORO GLOBAL ===== -->
+    <article class="tarjeta">
+      <header class="tarjeta-cabecera">
+        <h2>Preguntas frecuentes</h2>
+        @if (esAdmin() && formAbierto() !== 'faq') {
+          <button class="btn btn-principal" (click)="abrirFormulario('faq')">+ Nueva FAQ</button>
+        } @else if (!esAdmin()) {
+          <span class="chip-faq">Las publica el admin</span>
+        }
+      </header>
+
+      @if (formAbierto() === 'faq') {
+        <ng-container [ngTemplateOutlet]="formulario" />
+      }
+
+      @for (t of faqs(); track t.id) {
+        <a class="hilo" [routerLink]="['/foro/tema', t.id]">
+          <div>
+            <p class="hilo-titulo">{{ t.titulo }}</p>
+            <p class="meta">Admin · fijado</p>
+          </div>
+          <span class="chip-faq">📌 FAQ</span>
+        </a>
+      } @empty {
+        <p class="vacio">Todavía no hay preguntas frecuentes.</p>
+      }
+    </article>
+
+    <article class="tarjeta">
+      <header class="tarjeta-cabecera">
+        <h2>General</h2>
+        @if (formAbierto() !== 'general') {
+          <button class="btn btn-principal" (click)="abrirFormulario('general')">+ Nuevo tema</button>
+        }
+      </header>
+
+      @if (formAbierto() === 'general') {
+        <ng-container [ngTemplateOutlet]="formulario" />
+      }
+
+      @if (cargando()) {
+        <p class="vacio">Cargando temas...</p>
+      } @else {
+        @for (t of generales(); track t.id) {
+          <a class="hilo" [routerLink]="['/foro/tema', t.id]">
+            <div>
+              <p class="hilo-titulo">{{ t.titulo }}</p>
+              <p class="meta">{{ t.autorNombre }} · {{ t.fechaCreacion | date:'dd/MM/yyyy' }} · {{ t.cantidadRespuestas }} respuestas</p>
+            </div>
+            <span class="flecha">›</span>
+          </a>
+        } @empty {
+          <p class="vacio">Todavía no hay temas generales. Creá el primero.</p>
+        }
+      }
+    </article>
+  }
+</section>
+
+<!-- Formulario para crear un tema (se reutiliza en los tres lugares) -->
+<ng-template #formulario>
+  <form class="formulario" [formGroup]="form" (ngSubmit)="publicar()">
+    <input type="text" formControlName="titulo" maxlength="150"
+           [placeholder]="formAbierto() === 'faq' ? 'Pregunta frecuente' : 'Título del tema'" />
+    @if (invalido('titulo')) { <small>El título es obligatorio (máx. 150 caracteres)</small> }
+
+    <textarea formControlName="contenido" rows="4" maxlength="2000"
+              [placeholder]="formAbierto() === 'faq' ? 'Respuesta' : 'Contá tu consulta o experiencia'"></textarea>
+    @if (invalido('contenido')) { <small>El contenido es obligatorio (máx. 2000 caracteres)</small> }
+
+    <div class="acciones">
+      <button type="submit" class="btn btn-principal" [disabled]="guardando()">
+        {{ guardando() ? 'Publicando...' : 'Publicar' }}
+      </button>
+      <button type="button" class="btn btn-secundario" (click)="cerrarFormulario()">Cancelar</button>
+    </div>
+  </form>
+</ng-template>

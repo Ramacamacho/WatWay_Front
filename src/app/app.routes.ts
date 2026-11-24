@@ -11,6 +11,8 @@ import { Admin } from './Pages/admin/admin';
 import { adminGuard } from './Servicios/admin-guard';
 import { Perfilpage } from './Pages/perfilpage/perfilpage';
 import { SistGastos } from './SecondPages/sist-gastos/sist-gastos';
+import { Foro } from './Pages/foro/foro';
+import { ForoTema } from './Pages/foro-tema/foro-tema';
 
 export const routes: Routes = [
   { path: '', component: Home },
@@ -23,6 +25,8 @@ export const routes: Routes = [
   { path: 'admin', component: Admin, canActivate: [adminGuard] },
   { path: 'perfil', component: Perfilpage, canActivate: [authGuard] },
   { path: 'finanzas', component: SistGastos, canActivate: [authGuard] },
+  { path: 'foro', component: Foro, canActivate: [authGuard] },
+  { path: 'foro/tema/:id', component: ForoTema, canActivate: [authGuard] },
 
   // El comodín SIEMPRE va último: atrapa cualquier URL que no coincida con las de arriba
   { path: '**', redirectTo: '' },

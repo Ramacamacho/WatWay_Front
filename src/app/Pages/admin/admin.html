@@ -70,4 +70,21 @@
       </table>
     </div>
   }
+
+  <h2>Estados con empleadores</h2>
+  <p class="subtitulo">
+    Marcá dónde tiene empleadores la agencia: se muestra en el foro de cada estado.
+    Hoy son {{ cantidadConEmpleadores() }} de {{ estados().length }}.
+  </p>
+  <div class="estados-grilla">
+    @for (e of estados(); track e.codigo) {
+      <label class="estado-opcion" [class.marcado]="e.tieneEmpleadores">
+        <input type="checkbox"
+               [checked]="e.tieneEmpleadores"
+               [disabled]="cambiandoCodigo() === e.codigo"
+               (change)="alternarEmpleadores(e)" />
+        {{ e.nombre }}
+      </label>
+    }
+  </div>
 </section>

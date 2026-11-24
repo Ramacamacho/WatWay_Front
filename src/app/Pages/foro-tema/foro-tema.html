@@ -1,0 +1,119 @@
+<section class="foro-tema">
+  <a class="volver" routerLink="/foro" [queryParams]="volverParams()">‹ Volver al foro</a>
+
+  @if (error()) {
+    <p class="error">{{ error() }}</p>
+  }
+
+  @if (cargando()) {
+    <p class="vacio">Cargando tema...</p>
+  } @else if (tema(); as t) {
+    <!-- ===== Tema ===== -->
+    <article class="tarjeta">
+      <p class="lugar">
+        @if (t.tipo === 'FAQ') {
+          <span class="chip-faq">📌 Pregunta frecuente</span>
+        } @else {
+          {{ t.estadoNombre ? 'Foro de ' + t.estadoNombre : 'Foro global · General' }}
+        }
+      </p>
+
+      @if (editandoTema()) {
+        <form class="formulario" [formGroup]="formTema" (ngSubmit)="guardarTema()">
+          <input type="text" formControlName="titulo" maxlength="150" />
+          @if (formTema.controls.titulo.invalid && formTema.controls.titulo.touched) {
+            <small>El título es obligatorio (máx. 150 caracteres)</small>
+          }
+          <textarea formControlName="contenido" rows="5" maxlength="2000"></textarea>
+          @if (formTema.controls.contenido.invalid && formTema.controls.contenido.touched) {
+            <small>El contenido es obligatorio (máx. 2000 caracteres)</small>
+          }
+          <div class="acciones">
+            <button type="submit" class="btn btn-principal" [disabled]="guardando()">Guardar</button>
+            <button type="button" class="btn btn-secundario" (click)="editandoTema.set(false)">Cancelar</button>
+          </div>
+        </form>
+      } @else {
+        <h1>{{ t.titulo }}</h1>
+        <p class="meta">
+          {{ t.tipo === 'FAQ' ? 'Admin' : t.autorNombre }} · {{ t.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}
+          @if (t.fechaEdicion) { · editado }
+        </p>
+        <p class="contenido">{{ t.contenido }}</p>
+
+        @if (t.puedeEditar || t.puedeBorrar) {
+          <div class="acciones">
+            @if (confirmandoBorrarTema()) {
+              <span class="confirmar">¿Borrar el tema y sus respuestas?</span>
+              <button class="btn btn-peligro" (click)="borrarTema()">Sí</button>
+              <button class="btn btn-secundario" (click)="confirmandoBorrarTema.set(false)">No</button>
+            } @else {
+              @if (t.puedeEditar) {
+                <button class="btn btn-secundario" (click)="empezarEdicionTema()">Editar</button>
+              }
+              @if (t.puedeBorrar) {
+                <button class="btn btn-peligro" (click)="confirmandoBorrarTema.set(true)">Borrar</button>
+              }
+            }
+          </div>
+        }
+      }
+    </article>
+
+    <!-- ===== Respuestas (las FAQ no tienen) ===== -->
+    @if (t.tipo !== 'FAQ') {
+      <h2>{{ t.respuestas.length }} {{ t.respuestas.length === 1 ? 'respuesta' : 'respuestas' }}</h2>
+
+      @for (r of t.respuestas; track r.id) {
+        <article class="tarjeta respuesta">
+          <p class="meta">
+            {{ r.autorNombre }} · {{ r.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}
+            @if (r.fechaEdicion) { · editado }
+          </p>
+
+          @if (editandoRespuestaId() === r.id) {
+            <form class="formulario" [formGroup]="formEditarRespuesta" (ngSubmit)="guardarRespuesta(r)">
+              <textarea formControlName="contenido" rows="3" maxlength="2000"></textarea>
+              <div class="acciones">
+                <button type="submit" class="btn btn-principal">Guardar</button>
+                <button type="button" class="btn btn-secundario" (click)="editandoRespuestaId.set(null)">Cancelar</button>
+              </div>
+            </form>
+          } @else {
+            <p class="contenido">{{ r.contenido }}</p>
+            @if (r.puedeEditar || r.puedeBorrar) {
+              <div class="acciones">
+                @if (confirmandoRespuestaId() === r.id) {
+                  <span class="confirmar">¿Borrar respuesta?</span>
+                  <button class="btn btn-peligro" (click)="borrarRespuesta(r)">Sí</button>
+                  <button class="btn btn-secundario" (click)="confirmandoRespuestaId.set(null)">No</button>
+                } @else {
+                  @if (r.puedeEditar) {
+                    <button class="btn btn-secundario" (click)="empezarEdicionRespuesta(r)">Editar</button>
+                  }
+                  @if (r.puedeBorrar) {
+                    <button class="btn btn-peligro" (click)="confirmandoRespuestaId.set(r.id)">Borrar</button>
+                  }
+                }
+              </div>
+            }
+          }
+        </article>
+      } @empty {
+        <p class="vacio">Nadie respondió todavía. ¡Sé el primero!</p>
+      }
+
+      <form class="tarjeta formulario" [formGroup]="formRespuesta" (ngSubmit)="responder()">
+        <textarea formControlName="contenido" rows="3" maxlength="2000" placeholder="Escribí tu respuesta"></textarea>
+        @if (formRespuesta.controls.contenido.invalid && formRespuesta.controls.contenido.touched) {
+          <small>La respuesta no puede estar vacía (máx. 2000 caracteres)</small>
+        }
+        <div class="acciones">
+          <button type="submit" class="btn btn-principal" [disabled]="guardando()">
+            {{ guardando() ? 'Publicando...' : 'Responder' }}
+          </button>
+        </div>
+      </form>
+    }
+  }
+</section>
