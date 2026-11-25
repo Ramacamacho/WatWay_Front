@@ -4,10 +4,128 @@
   --cream: #f2e6d3;
 }
 
-.chat {
-  max-width: 600px;
-  margin: 20px auto;
+/* ---------- Dos columnas: matches | conversación ---------- */
+.chat-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 16px;
+  max-width: 1000px;
   height: 80vh;
+  margin: 20px auto;
+  padding: 0 12px;
+}
+
+.contactos {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px;
+  overflow-y: auto;
+  border: 1px solid #e3d6c0;
+  border-radius: 14px;
+  background: #fffaf2;
+  box-shadow: 0 6px 20px rgba(20, 33, 61, 0.12);
+}
+
+.contactos h3 {
+  margin: 0 0 8px;
+  padding: 0 4px;
+  color: var(--navy);
+  font-size: 1rem;
+}
+
+.contacto {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px;
+  border-radius: 10px;
+  color: var(--navy);
+  text-decoration: none;
+  transition: background 0.15s;
+}
+
+.contacto:hover {
+  background: var(--cream);
+}
+
+.contacto.activo {
+  background: var(--navy);
+  color: var(--cream);
+}
+
+.contacto.activo .avatar {
+  background: var(--gold);
+  color: var(--navy);
+}
+
+.contacto .avatar {
+  background: var(--navy);
+  color: var(--gold);
+}
+
+.contacto-datos {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.contacto-nombre {
+  overflow: hidden;
+  font-weight: 600;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.contacto-sub {
+  overflow: hidden;
+  font-size: 0.75rem;
+  opacity: 0.7;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+/* Cantidad de mensajes sin leer */
+.badge {
+  min-width: 20px;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: var(--gold);
+  color: var(--navy);
+  font-size: 0.75rem;
+  font-weight: 700;
+  line-height: 18px;
+  text-align: center;
+}
+
+/* En pantallas chicas la lista pasa arriba, en una fila que se desliza */
+@media (max-width: 700px) {
+  .chat-layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+    height: 85vh;
+  }
+
+  .contactos {
+    flex-direction: row;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .contactos h3,
+  .contacto-sub {
+    display: none;
+  }
+
+  .contacto {
+    flex-shrink: 0;
+  }
+}
+
+.chat {
+  min-height: 0;
   display: flex;
   flex-direction: column;
   border: 1px solid #e3d6c0;
