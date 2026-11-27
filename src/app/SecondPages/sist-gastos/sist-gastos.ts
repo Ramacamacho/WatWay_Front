@@ -36,7 +36,7 @@ export class SistGastos implements OnInit {
   formulario = this.fb.nonNullable.group({
     type: ['GASTO' as TipoMovimiento, Validators.required],
     description: ['', Validators.required],
-    cost: [null as number | null, [Validators.required, Validators.min(0), Validators.max(10000000)]],
+    cost: [null as number | null, [Validators.required, Validators.min(0.01), Validators.max(10000000)]],
     date: ['', Validators.required],
     category: ['OTROS', Validators.required],
   });
