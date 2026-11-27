@@ -146,6 +146,24 @@ export class Admin implements OnInit {
     });
   }
 
+  quitarAdmin(u: AdminUsuario) {
+    if (u.credentialId === null) return;
+    this.limpiarMensajes();
+    this.procesandoId.set(u.usuarioId);
+
+    this.adminService.quitarAdmin(u.credentialId).subscribe({
+      next: () => {
+        this.procesandoId.set(null);
+        this.exito.set(`${u.nombre} ${u.apellido} ya no es admin.`);
+        this.cargar();
+      },
+      error: (err: HttpErrorResponse) => {
+        this.procesandoId.set(null);
+        this.error.set(this.mensajeError(err, 'No se pudo quitar el rol.'));
+      },
+    });
+  }
+
   private limpiarMensajes() {
     this.error.set('');
     this.exito.set('');
@@ -155,6 +173,8 @@ export class Admin implements OnInit {
     if (err.status === 401) return 'Tu sesión venció. Volvé a iniciar sesión.';
     if (err.status === 403) return 'No tenés permisos de administrador.';
     if (err.status === 0) return 'No se pudo conectar con el servidor.';
+    // Errores de reglas de negocio (400): el back manda el motivo en { error: "..." }
+    if (err.status === 400 && err.error?.error) return err.error.error;
     return porDefecto;
   }
 }

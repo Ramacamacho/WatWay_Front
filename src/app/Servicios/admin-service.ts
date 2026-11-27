@@ -26,4 +26,9 @@ export class AdminService {
   hacerAdmin(credentialId: number) {
     return this.http.post(`${this.apiUrl}/usuarios/${credentialId}/rol/ADMIN`, {}, { responseType: 'text' });
   }
+
+  // DELETE /admin/usuarios/{credentialId}/rol/ADMIN
+  quitarAdmin(credentialId: number) {
+    return this.http.delete(`${this.apiUrl}/usuarios/${credentialId}/rol/ADMIN`, { responseType: 'text' });
+  }
 }
