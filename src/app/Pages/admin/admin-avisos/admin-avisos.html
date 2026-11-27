@@ -1,0 +1,54 @@
+<h2>Avisos generales</h2>
+<p class="subtitulo">Lo que publiques acá les aparece a todos los usuarios arriba de la pantalla.</p>
+
+@if (error()) {
+  <p class="mensaje error">{{ error() }}</p>
+}
+@if (exito()) {
+  <p class="mensaje exito">{{ exito() }}</p>
+}
+
+<form class="aviso-form" [formGroup]="form" (ngSubmit)="guardar()">
+  <input formControlName="titulo" placeholder="Título (ej: Vacantes nuevas en Wyoming)" maxlength="100" />
+  @if (form.controls.titulo.touched && form.controls.titulo.invalid) {
+    <small class="campo-error">El título es obligatorio (máximo 100 caracteres).</small>
+  }
+  <textarea formControlName="mensaje" rows="3" placeholder="Mensaje" maxlength="500"></textarea>
+  @if (form.controls.mensaje.touched && form.controls.mensaje.invalid) {
+    <small class="campo-error">El mensaje es obligatorio (máximo 500 caracteres).</small>
+  }
+  <label class="check">
+    <input type="checkbox" formControlName="importante" /> Importante (se muestra en rojo)
+  </label>
+  <div class="botones">
+    <button class="btn btn-principal" type="submit" [disabled]="guardando()">
+      {{ editandoId() === null ? 'Publicar aviso' : 'Guardar cambios' }}
+    </button>
+    @if (editandoId() !== null) {
+      <button class="btn" type="button" (click)="cancelarEdicion()">Cancelar</button>
+    }
+  </div>
+</form>
+
+@for (a of avisos(); track a.id) {
+  <article class="aviso-item" [class.apagado]="!a.activo" [class.importante]="a.importante">
+    <div class="aviso-info">
+      <strong>{{ a.importante ? '⚠️' : '📢' }} {{ a.titulo }}</strong>
+      <p>{{ a.mensaje }}</p>
+      <small>{{ a.autorNombre }} · {{ a.fechaCreacion | date: 'dd/MM/yyyy HH:mm' }} · {{ a.activo ? 'Visible' : 'Oculto' }}</small>
+    </div>
+    <div class="aviso-acciones">
+      @if (borrandoId() === a.id) {
+        <span>¿Borrar?</span>
+        <button class="btn btn-peligro" (click)="borrar(a)">Sí</button>
+        <button class="btn" (click)="borrandoId.set(null)">No</button>
+      } @else {
+        <button class="btn" (click)="alternarActivo(a)">{{ a.activo ? 'Ocultar' : 'Mostrar' }}</button>
+        <button class="btn" (click)="editar(a)">Editar</button>
+        <button class="btn btn-peligro" (click)="borrandoId.set(a.id)">Borrar</button>
+      }
+    </div>
+  </article>
+} @empty {
+  <p class="vacio">Todavía no publicaste avisos.</p>
+}

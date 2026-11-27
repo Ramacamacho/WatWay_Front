@@ -2,9 +2,10 @@ import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Header } from './Components/header/header';
 import { Footer } from './Components/footer/footer';
+import { AvisosBanner } from './Components/avisos-banner/avisos-banner';
 
 @Component({
-  imports: [RouterOutlet, Header, Footer],
+  imports: [RouterOutlet, Header, Footer, AvisosBanner],
   selector: 'app-root',
   styleUrl: './app.css',
   templateUrl: './app.html',

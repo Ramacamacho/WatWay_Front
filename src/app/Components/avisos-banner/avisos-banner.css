@@ -1,0 +1,45 @@
+:host {
+  display: block;
+}
+
+.aviso {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 20px;
+  border-bottom: 1px solid #e3d0a6;
+  background: #f6efe1;
+  color: #14213d;
+  font-size: 0.9rem;
+}
+
+.aviso.importante {
+  border-bottom-color: #c9a9a3;
+  background: #f3d6d1;
+  color: #7a2a1f;
+}
+
+.icono {
+  font-size: 1.1rem;
+}
+
+.texto {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cerrar {
+  padding: 2px 8px;
+  border: none;
+  background: transparent;
+  color: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.cerrar:hover {
+  opacity: 1;
+}

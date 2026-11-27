@@ -6,10 +6,11 @@ import { AdminUsuario } from '../../Models/admin-usuario';
 import { ForoService } from '../../Servicios/foro-service';
 import { EstadoForo } from '../../Models/foro';
 import { AdminDenuncias } from './admin-denuncias/admin-denuncias';
+import { AdminAvisos } from './admin-avisos/admin-avisos';
 
 @Component({
   selector: 'app-admin',
-  imports: [AdminDenuncias],
+  imports: [AdminDenuncias, AdminAvisos],
   styleUrl: './admin.css',
   templateUrl: './admin.html',
 })
