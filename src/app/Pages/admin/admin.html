@@ -63,6 +63,11 @@
                             (click)="hacerAdmin(u)"
                             [disabled]="procesandoId() === u.usuarioId">Hacer admin</button>
                   }
+                  @if (esAdmin(u) && u.credentialId !== null) {
+                    <button class="btn"
+                            (click)="quitarAdmin(u)"
+                            [disabled]="procesandoId() === u.usuarioId">Quitar admin</button>
+                  }
                   <button class="btn btn-peligro"
                           (click)="pedirConfirmacion(u)"
                           [disabled]="procesandoId() === u.usuarioId">Desactivar</button>
