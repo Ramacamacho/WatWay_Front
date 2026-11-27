@@ -41,6 +41,11 @@
         </p>
         <p class="contenido">{{ t.contenido }}</p>
 
+        <!-- Un tema ajeno se puede denunciar (las FAQ las escribe el admin) -->
+        @if (!t.puedeEditar && t.tipo !== 'FAQ') {
+          <app-boton-denunciar tipo="TEMA_FORO" [referenciaId]="t.id"></app-boton-denunciar>
+        }
+
         @if (t.puedeEditar || t.puedeBorrar) {
           <div class="acciones">
             @if (confirmandoBorrarTema()) {
@@ -81,6 +86,9 @@
             </form>
           } @else {
             <p class="contenido">{{ r.contenido }}</p>
+            @if (!r.puedeEditar) {
+              <app-boton-denunciar tipo="RESPUESTA_FORO" [referenciaId]="r.id"></app-boton-denunciar>
+            }
             @if (r.puedeEditar || r.puedeBorrar) {
               <div class="acciones">
                 @if (confirmandoRespuestaId() === r.id) {

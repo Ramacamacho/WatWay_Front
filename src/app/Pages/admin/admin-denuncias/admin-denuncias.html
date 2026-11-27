@@ -1,0 +1,84 @@
+<h2>
+  Denuncias
+  @if (pendientes() > 0) {
+    <span class="contador">{{ pendientes() }} pendientes</span>
+  }
+</h2>
+
+<div class="filtros">
+  @for (f of filtros; track f.texto) {
+    <button [class.activo]="filtro() === f.valor" (click)="cambiarFiltro(f.valor)">{{ f.texto }}</button>
+  }
+</div>
+
+@if (error()) {
+  <p class="mensaje error">{{ error() }}</p>
+}
+
+@if (cargando()) {
+  <p class="vacio">Cargando denuncias...</p>
+} @else {
+  @for (d of denuncias(); track d.id) {
+    <article class="denuncia" [attr.data-estado]="d.estado">
+      <header>
+        <span class="chip-estado">{{ textoEstado[d.estado] }}</span>
+        <strong>{{ textoTipo[d.tipo] }}</strong> · {{ motivoTexto(d) }}
+        <small>{{ d.fechaCreacion | date: 'dd/MM/yyyy HH:mm' }}</small>
+      </header>
+
+      <p class="personas">
+        <b>{{ d.denuncianteNombre }}</b> denunció a <b>{{ d.denunciadoNombre }}</b>
+        @if (!d.denunciadoActivo) { <span class="inactivo">(desactivado)</span> }
+      </p>
+
+      @if (d.contenidoDenunciado) {
+        <blockquote>{{ d.contenidoDenunciado }}</blockquote>
+      }
+      @if (d.descripcion) {
+        <p class="descripcion">“{{ d.descripcion }}”</p>
+      }
+
+      @if (d.estado === 'RESUELTA' || d.estado === 'DESCARTADA') {
+        <p class="cierre">
+          {{ d.estado === 'RESUELTA' ? 'Resuelta' : 'Descartada' }} por {{ d.revisadaPorNombre }}
+          el {{ d.fechaCierre | date: 'dd/MM/yyyy HH:mm' }}
+          @if (d.medidas) { · {{ d.medidas }} }
+          @if (d.notaAdmin) { <br />Nota: {{ d.notaAdmin }} }
+        </p>
+      } @else if (decidiendoId() === d.id) {
+        <div class="decision">
+          @if (accion() === 'resolver') {
+            <p class="titulo-decision">Resolver: la denuncia es válida. ¿Qué medidas tomás?</p>
+            @if (d.tipo !== 'USUARIO') {
+              <label><input type="checkbox" [(ngModel)]="borrarContenido" /> Borrar el contenido denunciado</label>
+            }
+            <label><input type="checkbox" [(ngModel)]="desactivarUsuario" /> Desactivar a {{ d.denunciadoNombre }}</label>
+          } @else {
+            <p class="titulo-decision">Descartar: la denuncia no corresponde. No se toca nada.</p>
+          }
+          <textarea [(ngModel)]="nota" rows="2" maxlength="500" placeholder="Nota interna (opcional)"></textarea>
+          <div class="botones">
+            <button class="btn" [class.btn-peligro]="accion() === 'resolver'"
+                    (click)="confirmar(d)" [disabled]="procesandoId() === d.id">
+              Confirmar {{ accion() === 'resolver' ? 'resolución' : 'descarte' }}
+            </button>
+            <button class="btn" (click)="cerrarDecision()">Cancelar</button>
+          </div>
+        </div>
+      } @else {
+        <div class="botones">
+          @if (d.estado === 'PENDIENTE') {
+            <button class="btn btn-principal" (click)="revisar(d)" [disabled]="procesandoId() === d.id">Tomar en revisión</button>
+          }
+          @if (d.estado === 'EN_REVISION') {
+            <span class="nota-revision">En revisión por {{ d.revisadaPorNombre }}</span>
+            <button class="btn btn-peligro" (click)="abrirDecision(d, 'resolver')">Resolver</button>
+          }
+          <button class="btn" (click)="abrirDecision(d, 'descartar')">Descartar</button>
+        </div>
+      }
+    </article>
+  } @empty {
+    <p class="vacio">No hay denuncias {{ filtro() ? 'en este estado' : '' }}.</p>
+  }
+}

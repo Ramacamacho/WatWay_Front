@@ -1,0 +1,184 @@
+:host {
+  display: block;
+  margin: 1.5rem 0 2rem;
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #14213d;
+}
+
+.contador {
+  padding: 2px 10px;
+  border-radius: 12px;
+  background: #a33a2c;
+  color: #fff;
+  font-size: 0.8rem;
+}
+
+.filtros {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.filtros button {
+  padding: 6px 12px;
+  border: 1px solid #d8c9ae;
+  border-radius: 16px;
+  background: #fff;
+  color: #14213d;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.filtros button.activo {
+  border-color: #14213d;
+  background: #14213d;
+  color: #f2e6d3;
+}
+
+.denuncia {
+  margin-bottom: 10px;
+  padding: 12px 14px;
+  border: 1px solid #e3d6c0;
+  border-left: 4px solid #b08d3c;
+  border-radius: 10px;
+  background: #fffaf2;
+}
+
+.denuncia[data-estado='PENDIENTE'] {
+  border-left-color: #a33a2c;
+}
+
+.denuncia[data-estado='RESUELTA'],
+.denuncia[data-estado='DESCARTADA'] {
+  border-left-color: #b9b9b9;
+  opacity: 0.85;
+}
+
+.denuncia header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+
+.denuncia header small {
+  margin-left: auto;
+  color: #8a8a8a;
+}
+
+.chip-estado {
+  padding: 1px 8px;
+  border-radius: 10px;
+  background: #14213d;
+  color: #f2e6d3;
+  font-size: 0.75rem;
+}
+
+.personas {
+  margin: 6px 0;
+}
+
+.inactivo {
+  color: #a33a2c;
+}
+
+blockquote {
+  margin: 6px 0;
+  padding: 6px 10px;
+  border-left: 3px solid #d8c9ae;
+  background: #f6efe1;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.descripcion {
+  margin: 4px 0;
+  font-style: italic;
+}
+
+.cierre {
+  margin: 6px 0 0;
+  color: #5a5a5a;
+  font-size: 0.85rem;
+}
+
+.decision {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 10px;
+  border: 1px dashed #d8c9ae;
+  border-radius: 8px;
+}
+
+.titulo-decision {
+  margin: 0;
+  font-weight: 600;
+}
+
+.decision textarea {
+  padding: 6px 8px;
+  border: 1px solid #d8c9ae;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.botones {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.nota-revision {
+  color: #8a6d2b;
+  font-size: 0.85rem;
+}
+
+.btn {
+  padding: 6px 12px;
+  border: 1px solid #d8c9ae;
+  border-radius: 8px;
+  background: #fff;
+  color: #14213d;
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.btn-principal {
+  border-color: #14213d;
+  background: #14213d;
+  color: #f2e6d3;
+}
+
+.btn-peligro {
+  border-color: #a33a2c;
+  background: #a33a2c;
+  color: #fff;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.mensaje.error {
+  padding: 8px 12px;
+  border-radius: 8px;
+  background: #f3d6d1;
+  color: #a33a2c;
+}
+
+.vacio {
+  color: #8a8a8a;
+}

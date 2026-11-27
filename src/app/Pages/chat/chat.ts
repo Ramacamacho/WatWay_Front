@@ -5,13 +5,14 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import { ChatService } from '../../Servicios/chat-service';
+import { BotonDenunciar } from '../../Components/boton-denunciar/boton-denunciar';
 import { MatchService } from '../../Servicios/match-service';
 import { Mensaje } from '../../Models/mensaje';
 import { UsuarioMatch } from '../../Models/usuario-match';
 
 @Component({
   selector: 'app-chat',
-  imports: [FormsModule, DatePipe, RouterLink],
+  imports: [FormsModule, DatePipe, RouterLink, BotonDenunciar],
   templateUrl: './chat.html',
   styleUrl: './chat.css',
 })

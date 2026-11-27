@@ -2,12 +2,13 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 import { MatchService } from '../../Servicios/match-service';
+import { BotonDenunciar } from '../../Components/boton-denunciar/boton-denunciar';
 import { ChatService } from '../../Servicios/chat-service';
 import { UsuarioMatch } from '../../Models/usuario-match';
 
 @Component({
   selector: 'app-match',
-  imports: [RouterLink],
+  imports: [RouterLink, BotonDenunciar],
   styleUrl: './match.css',
   templateUrl: './match.html',
 })

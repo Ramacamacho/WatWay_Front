@@ -5,10 +5,11 @@ import { Auth } from '../../Servicios/auth';
 import { AdminUsuario } from '../../Models/admin-usuario';
 import { ForoService } from '../../Servicios/foro-service';
 import { EstadoForo } from '../../Models/foro';
+import { AdminDenuncias } from './admin-denuncias/admin-denuncias';
 
 @Component({
   selector: 'app-admin',
-  imports: [],
+  imports: [AdminDenuncias],
   styleUrl: './admin.css',
   templateUrl: './admin.html',
 })

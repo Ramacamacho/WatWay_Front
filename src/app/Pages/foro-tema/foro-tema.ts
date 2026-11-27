@@ -6,9 +6,10 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ForoService } from '../../Servicios/foro-service';
 import { Respuesta, TemaDetalle } from '../../Models/foro';
 
+import { BotonDenunciar } from '../../Components/boton-denunciar/boton-denunciar';
 @Component({
   selector: 'app-foro-tema',
-  imports: [RouterLink, DatePipe, ReactiveFormsModule],
+  imports: [RouterLink, DatePipe, ReactiveFormsModule, BotonDenunciar],
   templateUrl: './foro-tema.html',
   styleUrl: './foro-tema.css',
 })

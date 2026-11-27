@@ -31,6 +31,11 @@
     <a class="btn-volver" routerLink="/match">← Volver</a>
     <span class="avatar">{{ nombreOtro().charAt(0) }}</span>
     <h2>{{ nombreOtro() }}</h2>
+    <!-- El @for con track recrea el botón al cambiar de chat (así no queda el "enviada" del anterior) -->
+    @for (id of [otroUsuarioId()]; track id) {
+      <app-boton-denunciar class="denunciar-perfil" tipo="USUARIO" [referenciaId]="id"
+                           etiqueta="Denunciar perfil"></app-boton-denunciar>
+    }
   </header>
 
   @if (cargando()) {
@@ -69,6 +74,11 @@
                 }
               }
             </span>
+
+            <!-- Los mensajes que me mandaron se pueden denunciar -->
+            @if (!esMio(m)) {
+              <app-boton-denunciar tipo="MENSAJE" [referenciaId]="m.id"></app-boton-denunciar>
+            }
 
             @if (m.puedeModificar) {
               <div class="burbuja-acciones">

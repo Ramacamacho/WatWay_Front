@@ -9,6 +9,10 @@
     <p class="mensaje exito">{{ exito() }}</p>
   }
 
+  <!-- Denuncias (componente aparte) -->
+  <app-admin-denuncias></app-admin-denuncias>
+
+  <h2>Usuarios</h2>
   @if (cargando()) {
     <p>Cargando usuarios...</p>
   } @else if (usuarios().length === 0 && !error()) {

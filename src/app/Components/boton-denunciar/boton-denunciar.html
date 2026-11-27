@@ -1,0 +1,25 @@
+@if (enviado()) {
+  <span class="ok">✓ Denuncia enviada. Gracias, el equipo la va a revisar.</span>
+} @else if (!abierto()) {
+  <button type="button" class="link-denunciar" (click)="abrir()">🚩 {{ etiqueta() }}</button>
+} @else {
+  <div class="caja">
+    <select [(ngModel)]="motivo" name="motivo">
+      <option value="" disabled>Elegí un motivo</option>
+      @for (m of motivos; track m.valor) {
+        <option [value]="m.valor">{{ m.texto }}</option>
+      }
+    </select>
+    <textarea [(ngModel)]="descripcion" name="descripcion" rows="2" maxlength="500"
+              placeholder="Contanos qué pasó (opcional)"></textarea>
+    @if (error()) {
+      <span class="error">{{ error() }}</span>
+    }
+    <div class="botones">
+      <button type="button" class="btn-enviar" (click)="enviar()" [disabled]="!motivo || enviando()">
+        {{ enviando() ? 'Enviando...' : 'Enviar denuncia' }}
+      </button>
+      <button type="button" class="btn-cancelar" (click)="cancelar()">Cancelar</button>
+    </div>
+  </div>
+}

@@ -1,0 +1,78 @@
+:host {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.78rem;
+}
+
+.link-denunciar {
+  padding: 0;
+  border: none;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  opacity: 0.6;
+}
+
+.link-denunciar:hover {
+  opacity: 1;
+  text-decoration: underline;
+}
+
+.caja {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 220px;
+  padding: 8px;
+  border: 1px solid #e3d0a6;
+  border-radius: 8px;
+  background: #fffaf2;
+  color: #14213d;
+}
+
+.caja select,
+.caja textarea {
+  padding: 4px 6px;
+  border: 1px solid #d8c9ae;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.botones {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-enviar,
+.btn-cancelar {
+  padding: 4px 10px;
+  border-radius: 6px;
+  font: inherit;
+  cursor: pointer;
+}
+
+.btn-enviar {
+  border: 1px solid #a33a2c;
+  background: #a33a2c;
+  color: #fff;
+}
+
+.btn-enviar:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-cancelar {
+  border: 1px solid #d8c9ae;
+  background: #fff;
+  color: #14213d;
+}
+
+.error {
+  color: #a33a2c;
+}
+
+.ok {
+  color: #2f5d23;
+}
