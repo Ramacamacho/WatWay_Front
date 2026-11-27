@@ -1,6 +1,6 @@
 import { Component, DestroyRef, ElementRef, OnDestroy, OnInit, ViewChild, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { DatePipe } from '@angular/common';
@@ -18,6 +18,7 @@ import { UsuarioMatch } from '../../Models/usuario-match';
 })
 export class Chat implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private chatService = inject(ChatService);
   private matchService = inject(MatchService);
   private destroyRef = inject(DestroyRef);
@@ -108,6 +109,14 @@ export class Chat implements OnInit, OnDestroy {
     this.borrandoId.set(null);
     this.error.set('');
     this.cargarMensajes();
+  }
+
+  // Al denunciar el perfil el back deshace el match: sale de la lista
+  // y el chat se cierra, así que volvemos a Match
+  perfilDenunciado() {
+    const id = this.otroUsuarioId();
+    this.matches.update((lista) => lista.filter((m) => m.id !== id));
+    setTimeout(() => this.router.navigate(['/match']), 1500);
   }
 
   // ---------- Conversación ----------

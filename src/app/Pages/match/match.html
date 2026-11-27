@@ -7,6 +7,9 @@
   @if (error()) {
     <p class="error">{{ error() }}</p>
   }
+  @if (aviso()) {
+    <p class="aviso-match">{{ aviso() }}</p>
+  }
 
   @if (vista() === 'descubrir') {
 
@@ -28,7 +31,8 @@
         <div class="sobre-mi">
           <span class="etiqueta">Sobre mí</span>
           <p>{{ c.descripcion || 'Sin descripción' }}</p>
-          <app-boton-denunciar tipo="USUARIO" [referenciaId]="c.id" etiqueta="Denunciar perfil"></app-boton-denunciar>
+          <app-boton-denunciar tipo="USUARIO" [referenciaId]="c.id" etiqueta="Denunciar perfil"
+                               (denunciado)="perfilDenunciado()"></app-boton-denunciar>
         </div>
 
         <div class="acciones">
@@ -62,7 +66,8 @@
         <div class="sobre-mi">
           <span class="etiqueta">Sobre mí</span>
           <p>{{ m.descripcion || 'Sin descripción' }}</p>
-          <app-boton-denunciar tipo="USUARIO" [referenciaId]="m.id" etiqueta="Denunciar perfil"></app-boton-denunciar>
+          <app-boton-denunciar tipo="USUARIO" [referenciaId]="m.id" etiqueta="Denunciar perfil"
+                               (denunciado)="matchDenunciado(m)"></app-boton-denunciar>
         </div>
 
         <div class="acciones">

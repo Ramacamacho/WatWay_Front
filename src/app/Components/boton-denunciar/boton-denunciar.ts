@@ -1,4 +1,4 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, inject, input, output, signal } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { DenunciaService } from '../../Servicios/denuncia-service';
@@ -19,6 +19,8 @@ export class BotonDenunciar {
   tipo = input.required<TipoDenuncia>();
   referenciaId = input.required<number>();
   etiqueta = input('Denunciar');
+  // Avisa a la pantalla que la denuncia se envió (por ejemplo, para ocultar el perfil)
+  denunciado = output<void>();
 
   motivos = MOTIVOS;
   abierto = signal(false);
@@ -56,6 +58,7 @@ export class BotonDenunciar {
           this.enviando.set(false);
           this.abierto.set(false);
           this.enviado.set(true);
+          this.denunciado.emit();
         },
         error: (err: HttpErrorResponse) => {
           this.enviando.set(false);

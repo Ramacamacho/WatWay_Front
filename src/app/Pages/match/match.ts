@@ -26,6 +26,8 @@ export class Match implements OnInit {
   // Id del match al que se le pide confirmación para eliminar
   confirmandoId = signal<number | null>(null);
   eliminando = signal(false);
+  // Mensaje después de denunciar un perfil
+  aviso = signal('');
   // usuarioId -> cantidad de mensajes sin leer de ese match
   noLeidos = signal<Record<number, number>>({});
 
@@ -132,6 +134,24 @@ export class Match implements OnInit {
         this.eliminando.set(false);
       },
     });
+  }
+
+  // Al denunciar un perfil el back lo oculta para mí: paso al siguiente candidato
+  perfilDenunciado() {
+    this.aviso.set('Denunciaste el perfil: ya no te va a aparecer. El equipo lo va a revisar.');
+    setTimeout(() => {
+      this.aviso.set('');
+      this.cargarCandidato();
+    }, 1500);
+  }
+
+  // Si denuncio a un match, desaparece de mi lista (el back deshizo el match)
+  matchDenunciado(m: UsuarioMatch) {
+    this.aviso.set(`Denunciaste a ${m.nombre}: ya no está en tus matches.`);
+    setTimeout(() => {
+      this.matches.update(lista => lista.filter(x => x.id !== m.id));
+      this.aviso.set('');
+    }, 1500);
   }
 
   verDescubrir() {
