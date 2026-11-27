@@ -1,0 +1,10 @@
+@for (a of visibles(); track a.id) {
+  <div class="aviso" [class.importante]="a.importante" role="status">
+    <span class="icono">{{ a.importante ? '⚠️' : '📢' }}</span>
+    <div class="texto">
+      <strong>{{ a.titulo }}</strong>
+      <span>{{ a.mensaje }}</span>
+    </div>
+    <button class="cerrar" (click)="cerrar(a)" title="Cerrar aviso" aria-label="Cerrar aviso">✕</button>
+  </div>
+}
